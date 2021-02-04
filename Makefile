@@ -6,3 +6,6 @@ gcc_l:
 
 run: flex gcc_l
 	./analisador
+
+clean:
+	rm lex.yy.c analisador
