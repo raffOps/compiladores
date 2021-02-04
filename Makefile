@@ -1,8 +1,8 @@
 flex:
 	flex scanner.l
 
-gcc:
+gcc_l:
 	gcc lex.yy.c -o analisador -lfl
 
-run: flex gcc
+run: flex gcc_l
 	./analisador

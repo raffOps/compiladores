@@ -1,0 +1,226 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "lista_1",
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "z_Ewf6sOqywN"
+      },
+      "source": [
+        "## Questão 1 (Whisky)\n",
+        "\n",
+        "Um importador de Whisky tem as seguintes restrições de importação\n",
+        "\n",
+        "  * no máximo 2000 garrafas de Johnny Ballantine por 70 R$ cada uma\n",
+        "\n",
+        "  * no máximo 2500 garrafas de Old Gargantua por 50 R$ cada uma\n",
+        "\n",
+        "  * no máximo 1200 garrafas de Misty Deluxe por 40 R$ cada uma\n",
+        "\n",
+        "Dos Whiskies importados ele produz três misturas A, B, C, que ele vende por 68 R$, 57 R$ e 45 R$, respectivamente. As misturas são\n",
+        "\n",
+        "  * A: no mínimo 60% Johnny Ballantine, no máximo 20% Misty Deluxe\n",
+        "  * B: no mínimo 15% Johnny Ballantine, no máximo 60% Misty Deluxe\n",
+        "  * C: no máximo 50% Misty Deluxe.\n",
+        "\n",
+        "Quais seriam as misturas ótimas, e quantas garrafas de cada mistura devem ser produzidas para maximizar o lucro? Formule como programa linear.\n",
+        "Observações:\n",
+        "\n",
+        "  * Use como variáveis o número de garrafas x(m,i) da marca m usadas na mistura i.\n",
+        "  * Desconsidere a integralidade das garrafas.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "pIx8HuCotnOt"
+      },
+      "source": [
+        "Variáveis:\n",
+        "* $J$ = Quantidade de garrafas do tipo Johnny Ballantine\n",
+        "* $M$ = Quantidade de garrafas do tipo Misty Deluxe\n",
+        "* $O$ = Quantidade de garrafas do tipo Old Gargantua\n",
+        "\n",
+        "Maximiza: \n",
+        "* $68A + 57B + 45C - 70J - 40M - 50O$\n",
+        "\n",
+        "Sujeito a:\n",
+        "  * $J <= 2000$\n",
+        "  * $O <= 2500$\n",
+        "  * $M <= 1200$\n",
+        "  * $(J, A) >= 0.6$\n",
+        "  * $(J, B) >= 0.15$\n",
+        "  * $X(M, A) <= 0.2$\n",
+        "  * $X(M, B) <= 0.6$\n",
+        "  * $X(M, C) <= 0.5$\n",
+        "  * $X(J, B) + X(M, B) + X(O, B) = 1$\n",
+        "  * $X(J, B) + X(M, B) + X(O, B) = 1$\n",
+        "  * $X(J, B) + X(M, B) + X(O, B) = 1$"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "5oSUsDca61Xg"
+      },
+      "source": [
+        "## Questão 2 (Luvas de luxo)\n",
+        "A empresa “Luvas de luxo” produz luvas para homens, mulheres e crianças e quer determinar o volume ideal da produção. Eles têm funcionários fixos que trabalham 40h por semana. Por lei, o número de funcionário fixos não pode ser menos que 20. Outros funcionários trabalham em tempo parcial. Nesse caso a empresa tem que respeitar:\n",
+        "  * Os funcionários de tempo parcial trabalham 20h por semana \n",
+        "  * para cada funcionário de tempo parcial a empresa tem que ter contratado ao menos dois funcionários fixos.\n",
+        "\n",
+        "Todas luvas são confeccionadas com couro, e “Luvas de luxo” recebe 5000m2 de couro por semana. A seguinte tabela mostra o lucro e a demanda de material para cada tipo de luva.\n",
+        "\n",
+        "| Luvas    | Quantidade (m^2) | Trabalho (min) | Lucro (R$) |\n",
+        "|----------|------------------|----------------|------------|\n",
+        "| Homens   | 2                | 30             | 8          |\n",
+        "| Mulheres | 1.5              | 45             | 10         |\n",
+        "| Criancas | 1                | 40             | 6          | [texto do link](https://)\n",
+        "\n",
+        "Cada funcionário fixo recebe 13 R$ por hora, cada funcionário  que trabalha parcialmente recebe 10 RS por hora. Como a empresa pode maximizar o lucro líquido dela, i.e. o lucro das vendas menos os gastos com os funcionários?"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "NPwXY_mY8tPt"
+      },
+      "source": [
+        "Variáveis:\n",
+        "  \n",
+        "  * $T_{1}$ = Quantidade trabalhadores fixos\n",
+        "  * $T_{2}$ = Quantidade de trabalhadores parciais\n",
+        "  * $M$ = Quantidade de luvas masculinas produzidas\n",
+        "  * $F$ = Quantidade de luvas femininas produzidas\n",
+        "  * $I$ = Quantidade de luvas infantis produzidas\n",
+        "\n",
+        "\n",
+        "\n",
+        "Maximiza:\n",
+        "  * $8M + 10F + 6I - 13T_{1} - 10T_{2}$\n",
+        "\n",
+        "Sujeito a:\n",
+        "  * $T_{1} - 2T_{2} >= 0$\n",
+        "  * $2M + 1.5F + 1I <= 5000$\n",
+        "  * $40T_{1} + 20T_{2} - 0.5M - 0.75F - 0.66I >= 0$\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "cmWiEjidi3uL"
+      },
+      "source": [
+        "## Questão 3 (Produção de metais)\n",
+        "\n",
+        "A empresa “Metallica” quer produzir uma nova liga metálica com 40% de estanho,\n",
+        "35% de zinco, e 25% de chumbo. Ela tem cinco ligas disponíveis com as seguintes\n",
+        "características:\n",
+        "\n",
+        "|               | 1  | 2  | 3  | 4  | 5  |\n",
+        "|---------------|----|----|----|----|----|\n",
+        "| Estanho [%]   | 60 | 25 | 45 | 20 | 50 |\n",
+        "| Zinco [%]     | 10 | 15 | 45 | 50 | 40 |\n",
+        "| Chumbo [%]    | 30 | 60 | 10 | 30 | 10 |\n",
+        "| Custo [RS/kg] | 22 | 20 | 25 | 24 | 27 |\n",
+        "\n",
+        "A empresa quer saber em quais proporções os cinco ligas devem ser misturadas para **produzir** a nova liga de menor custo.\n",
+        "\n",
+        "\n",
+        "\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "u0XBCEyvnMTX"
+      },
+      "source": [
+        "Variáveis:\n",
+        " * $L_{i}$ = Quantidade em Kg da liga i, com i indo de 1 até 5\n",
+        " * $C_{i}$ = Custo em reais de cada liga liga i, com i indo de 1 até 5\n",
+        " * $E_{i}$ = Proporções de estanho em cada liga i, com i indo de 1 até 5\n",
+        " * $Z_{i}$ = Proporções de zinco em cada liga i, com i indo de 1 até 5\n",
+        " * $P_{i}$ = Proporções de chumbo em cada liga i, com i indo de 1 até 5\n",
+        " \n",
+        "\n",
+        "Minimiza:\n",
+        "  * $ \\sum \\limits _{i=1} ^{5} C_{i}L_{i} $\n",
+        "\n",
+        "Sujeito:\n",
+        "  * $ \\sum \\limits_{i=1} ^{5} E_{i}L_{i} = 40 $\n",
+        "  * $ \\sum \\limits_{i=1} ^{5} Z_{i}L_{i} = 35 $\n",
+        "  * $ \\sum \\limits_{i=1} ^{5} P_{i}L_{i} = 25 $"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "8q83zJ9_rWT5"
+      },
+      "source": [
+        "# Questão 4 (Refinar óleo da Costa)\n",
+        "Um certo óleo é refinado a partir da mistura de outros óleos, vegetais ou não vegetais.\n",
+        "Temos óleos vegetais V1 e V2 e óleos não vegetais NV1 NV2 NV3. Por restrições da\n",
+        "fábrica, um máximo de 200 toneladas de óleos vegetais podem ser refinados por mês,\n",
+        "e um máximo de 250 toneladas de óleos não vegetais. A acidez do óleo desejado deve\n",
+        "estar entre 3 e 6 (dada uma unidade de medida) e a acidez depende linearmente das\n",
+        "quantidades/acidez dos óleos brutos usados. O preço de venda de uma tonelada do óleo\n",
+        "é R$ 150. Calcule a mistura que maximiza o lucro, dado que:\n",
+        "\n",
+        "| Óleo      | V1  | V2  | NV1 | NV2 | NV3 |\n",
+        "|-----------|-----|-----|-----|-----|-----|\n",
+        "| Custo/ton | 110 | 120 | 130 | 110 | 115 |\n",
+        "| Acidez    | 8.8 | 6.1 | 2.0 | 4.2 | 5.0 |\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ZC70DyL4s0uH"
+      },
+      "source": [
+        "Variáveis:\n",
+        "  * $ T_{i}$ = Quantidade em toneladas de cada óleo i, com i indo de 1 até 5 \n",
+        "\n",
+        "  * $ C_{i}$ = Custo por tonelada de cada óleo i, com i indo de 1 até 5 \n",
+        "\n",
+        "  * $ A_{i}$ = Acidez cada óleo i, com i indo de 1 até 5 \n",
+        "\n",
+        "\n",
+        "Maximiza:\n",
+        "  * $\\sum \\limits_{i=1} ^{5} 150T_{i} -\\sum \\limits_{i=1} ^{5} C_{i}T_{i} $\n",
+        "\n",
+        "Sujeito a:\n",
+        "  * $\\sum \\limits_{i=1} ^{2} T_{i} <= 200 $\n",
+        "  * $\\sum \\limits_{i=3} ^{5} T_{i} <= 250 $\n",
+        "  * $\\sum \\limits_{i=1} ^{2} (T_{i} / A_{i}) <= 6 $\n",
+        "  * $\\sum \\limits_{i=1} ^{2} (T_{i} / A_{i}) >= 3 $"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xewifGbdrW1o"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
