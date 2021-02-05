@@ -811,7 +811,11 @@ YY_DECL
 	{
 #line 12 "scanner.l"
 
-#line 814 "lex.yy.c"
+
+#line 15 "scanner.l"
+ 
+
+#line 818 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -876,12 +880,12 @@ YY_LINENO_REWIND_TO(yy_cp - 1);
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 13 "scanner.l"
+#line 17 "scanner.l"
 {printf("achou comentario 1 linha"); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 14 "scanner.l"
+#line 18 "scanner.l"
 {printf("achou comentario varias linhas");}
 	YY_BREAK
 case 3:
@@ -889,15 +893,15 @@ case 3:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 16 "scanner.l"
-{return (int)',' ;}
+#line 22 "scanner.l"
+{return (int)',' ;} 
 	YY_BREAK
 case 4:
 *yy_cp = (yy_hold_char); /* undo effects of setting up yytext */
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 17 "scanner.l"
+#line 23 "scanner.l"
 {return (int)';' ;}
 	YY_BREAK
 case 5:
@@ -905,7 +909,7 @@ case 5:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 18 "scanner.l"
+#line 24 "scanner.l"
 {return (int)':' ;}
 	YY_BREAK
 case 6:
@@ -913,7 +917,7 @@ case 6:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 20 "scanner.l"
+#line 26 "scanner.l"
 {return (int)'(' ;}
 	YY_BREAK
 case 7:
@@ -921,7 +925,7 @@ case 7:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 21 "scanner.l"
+#line 27 "scanner.l"
 {return (int)')' ;}
 	YY_BREAK
 case 8:
@@ -929,7 +933,7 @@ case 8:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 23 "scanner.l"
+#line 29 "scanner.l"
 {return (int)'[' ;}
 	YY_BREAK
 case 9:
@@ -937,7 +941,7 @@ case 9:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 24 "scanner.l"
+#line 30 "scanner.l"
 {return (int)']' ;}
 	YY_BREAK
 case 10:
@@ -945,7 +949,7 @@ case 10:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 26 "scanner.l"
+#line 32 "scanner.l"
 {return (int)'{' ;}
 	YY_BREAK
 case 11:
@@ -953,7 +957,7 @@ case 11:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 27 "scanner.l"
+#line 33 "scanner.l"
 {return (int)'}' ;}
 	YY_BREAK
 case 12:
@@ -961,7 +965,7 @@ case 12:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 29 "scanner.l"
+#line 35 "scanner.l"
 {return (int)'+' ;}
 	YY_BREAK
 case 13:
@@ -969,7 +973,7 @@ case 13:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 30 "scanner.l"
+#line 36 "scanner.l"
 {return (int)'-' ;}
 	YY_BREAK
 case 14:
@@ -977,7 +981,7 @@ case 14:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 31 "scanner.l"
+#line 37 "scanner.l"
 {return (int)'|' ;}
 	YY_BREAK
 case 15:
@@ -985,7 +989,7 @@ case 15:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 32 "scanner.l"
+#line 38 "scanner.l"
 {return (int)'*' ;}
 	YY_BREAK
 case 16:
@@ -993,7 +997,7 @@ case 16:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 33 "scanner.l"
+#line 39 "scanner.l"
 {return (int)'/'; }
 	YY_BREAK
 case 17:
@@ -1001,7 +1005,7 @@ case 17:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 35 "scanner.l"
+#line 41 "scanner.l"
 {return (int)'<' ;}
 	YY_BREAK
 case 18:
@@ -1009,7 +1013,7 @@ case 18:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 36 "scanner.l"
+#line 42 "scanner.l"
 {return (int)'>' ;}
 	YY_BREAK
 case 19:
@@ -1017,7 +1021,7 @@ case 19:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 37 "scanner.l"
+#line 43 "scanner.l"
 {return (int)'=';}
 	YY_BREAK
 case 20:
@@ -1025,7 +1029,7 @@ case 20:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 45 "scanner.l"
 {return (int)'!';}
 	YY_BREAK
 case 21:
@@ -1033,7 +1037,7 @@ case 21:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 40 "scanner.l"
+#line 46 "scanner.l"
 {return (int)'&';}
 	YY_BREAK
 case 22:
@@ -1041,7 +1045,7 @@ case 22:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 48 "scanner.l"
 {return (int)'%';}
 	YY_BREAK
 case 23:
@@ -1049,7 +1053,7 @@ case 23:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 43 "scanner.l"
+#line 49 "scanner.l"
 {return (int)'#';}
 	YY_BREAK
 case 24:
@@ -1057,7 +1061,7 @@ case 24:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 44 "scanner.l"
+#line 50 "scanner.l"
 {return (int)'^';}
 	YY_BREAK
 case 25:
@@ -1065,7 +1069,7 @@ case 25:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 52 "scanner.l"
 {return (int)'.';}
 	YY_BREAK
 case 26:
@@ -1073,7 +1077,7 @@ case 26:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 53 "scanner.l"
 {return (int)'$';}
 	YY_BREAK
 case 27:
@@ -1081,7 +1085,7 @@ case 27:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 49 "scanner.l"
+#line 57 "scanner.l"
 {return TK_OC_LE;}
 	YY_BREAK
 case 28:
@@ -1089,7 +1093,7 @@ case 28:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 50 "scanner.l"
+#line 58 "scanner.l"
 {return TK_OC_GE;}
 	YY_BREAK
 case 29:
@@ -1097,7 +1101,7 @@ case 29:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 51 "scanner.l"
+#line 59 "scanner.l"
 {return TK_OC_EQ;}
 	YY_BREAK
 case 30:
@@ -1105,7 +1109,7 @@ case 30:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 52 "scanner.l"
+#line 60 "scanner.l"
 {return TK_OC_NE;}
 	YY_BREAK
 case 31:
@@ -1113,7 +1117,7 @@ case 31:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 54 "scanner.l"
+#line 62 "scanner.l"
 {return TK_OC_AND;}
 	YY_BREAK
 case 32:
@@ -1121,7 +1125,7 @@ case 32:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 55 "scanner.l"
+#line 63 "scanner.l"
 {printf("achou or "); return TK_OC_OR;}
 	YY_BREAK
 case 33:
@@ -1129,7 +1133,7 @@ case 33:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 57 "scanner.l"
+#line 65 "scanner.l"
 {return TK_OC_SL;}
 	YY_BREAK
 case 34:
@@ -1137,7 +1141,7 @@ case 34:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 66 "scanner.l"
 {return TK_OC_SR;}
 	YY_BREAK
 case 35:
@@ -1145,7 +1149,7 @@ case 35:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 68 "scanner.l"
 {return TK_PR_INT;}
 	YY_BREAK
 case 36:
@@ -1153,7 +1157,7 @@ case 36:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 61 "scanner.l"
+#line 69 "scanner.l"
 {return TK_PR_FLOAT;}
 	YY_BREAK
 case 37:
@@ -1161,7 +1165,7 @@ case 37:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 62 "scanner.l"
+#line 70 "scanner.l"
 {return TK_PR_BOOL;}
 	YY_BREAK
 case 38:
@@ -1169,7 +1173,7 @@ case 38:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 63 "scanner.l"
+#line 71 "scanner.l"
 {return TK_PR_CHAR;}
 	YY_BREAK
 case 39:
@@ -1177,7 +1181,7 @@ case 39:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 72 "scanner.l"
 {return TK_PR_STRING;}
 	YY_BREAK
 case 40:
@@ -1185,7 +1189,7 @@ case 40:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 65 "scanner.l"
+#line 73 "scanner.l"
 {return TK_PR_IF;}
 	YY_BREAK
 case 41:
@@ -1193,7 +1197,7 @@ case 41:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 74 "scanner.l"
 {return TK_PR_THEN;}
 	YY_BREAK
 case 42:
@@ -1201,7 +1205,7 @@ case 42:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 67 "scanner.l"
+#line 75 "scanner.l"
 {return TK_PR_ELSE;}
 	YY_BREAK
 case 43:
@@ -1209,7 +1213,7 @@ case 43:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 68 "scanner.l"
+#line 76 "scanner.l"
 {return TK_PR_WHILE;}
 	YY_BREAK
 case 44:
@@ -1217,7 +1221,7 @@ case 44:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 69 "scanner.l"
+#line 77 "scanner.l"
 {return TK_PR_DO;}
 	YY_BREAK
 case 45:
@@ -1225,7 +1229,7 @@ case 45:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 70 "scanner.l"
+#line 78 "scanner.l"
 {return TK_PR_INPUT;}
 	YY_BREAK
 case 46:
@@ -1233,7 +1237,7 @@ case 46:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 71 "scanner.l"
+#line 79 "scanner.l"
 {return TK_PR_OUTPUT;}
 	YY_BREAK
 case 47:
@@ -1241,7 +1245,7 @@ case 47:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 72 "scanner.l"
+#line 80 "scanner.l"
 {return TK_PR_RETURN;}
 	YY_BREAK
 case 48:
@@ -1249,7 +1253,7 @@ case 48:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 81 "scanner.l"
 {return TK_PR_CONST;}
 	YY_BREAK
 case 49:
@@ -1257,7 +1261,7 @@ case 49:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 74 "scanner.l"
+#line 82 "scanner.l"
 {return TK_PR_STATIC;}
 	YY_BREAK
 case 50:
@@ -1265,7 +1269,7 @@ case 50:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 75 "scanner.l"
+#line 83 "scanner.l"
 {return TK_PR_FOREACH;}
 	YY_BREAK
 case 51:
@@ -1273,7 +1277,7 @@ case 51:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 76 "scanner.l"
+#line 84 "scanner.l"
 {return TK_PR_FOR;}
 	YY_BREAK
 case 52:
@@ -1281,7 +1285,7 @@ case 52:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 77 "scanner.l"
+#line 85 "scanner.l"
 {return TK_PR_SWITCH;}
 	YY_BREAK
 case 53:
@@ -1289,7 +1293,7 @@ case 53:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 78 "scanner.l"
+#line 86 "scanner.l"
 {return TK_PR_CASE;}
 	YY_BREAK
 case 54:
@@ -1297,7 +1301,7 @@ case 54:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 87 "scanner.l"
 {return TK_PR_BREAK;}
 	YY_BREAK
 case 55:
@@ -1305,7 +1309,7 @@ case 55:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 80 "scanner.l"
+#line 88 "scanner.l"
 {return TK_PR_CONTINUE;}
 	YY_BREAK
 case 56:
@@ -1313,7 +1317,7 @@ case 56:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 89 "scanner.l"
 {return TK_PR_CLASS;}
 	YY_BREAK
 case 57:
@@ -1321,7 +1325,7 @@ case 57:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 90 "scanner.l"
 {return TK_PR_PRIVATE;}
 	YY_BREAK
 case 58:
@@ -1329,7 +1333,7 @@ case 58:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 83 "scanner.l"
+#line 91 "scanner.l"
 {return TK_PR_PUBLIC;}
 	YY_BREAK
 case 59:
@@ -1337,7 +1341,7 @@ case 59:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 92 "scanner.l"
 {return TK_PR_PROTECTED;}
 	YY_BREAK
 case 60:
@@ -1345,7 +1349,7 @@ case 60:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 85 "scanner.l"
+#line 93 "scanner.l"
 {return TK_PR_END;}
 	YY_BREAK
 case 61:
@@ -1353,7 +1357,7 @@ case 61:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 94 "scanner.l"
 {return TK_PR_DEFAULT;}
 	YY_BREAK
 case 62:
@@ -1361,7 +1365,7 @@ case 62:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 89 "scanner.l"
+#line 97 "scanner.l"
 {return TK_LIT_INT;}
 	YY_BREAK
 case 63:
@@ -1369,15 +1373,15 @@ case 63:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 91 "scanner.l"
+#line 99 "scanner.l"
 {return TK_LIT_FALSE;}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 93 "scanner.l"
+#line 101 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1380 "lex.yy.c"
+#line 1384 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2385,6 +2389,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 93 "scanner.l"
+#line 101 "scanner.l"
 
 

@@ -10,10 +10,15 @@ int get_line_number(void) {
 %}
 
 %%
+
+ 
+
 \/\/.*\n$ {printf("achou comentario 1 linha"); }
 \/\*.*\*\/ {printf("achou comentario varias linhas");}
 
-^\,$ {return (int)',' ;}
+ 
+
+^\,$ {return (int)',' ;} 
 ^\;$ {return (int)';' ;}
 ^\:$ {return (int)':' ;}
 
@@ -45,6 +50,8 @@ int get_line_number(void) {
 
 ^\.$ {return (int)'.';}
 ^\$$ {return (int)'$';}
+
+ 
 
 ^\<\=$ {return TK_OC_LE;}
 ^\>\=$ {return TK_OC_GE;}
