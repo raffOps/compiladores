@@ -6,3 +6,7 @@ gcc_l:
 
 run: flex gcc_l
 	./analisador
+
+test:
+	cat exemplos.txt | make run
+

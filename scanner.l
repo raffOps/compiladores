@@ -10,8 +10,14 @@ int get_line_number(void) {
 %}
 
 %%
-\/\/.*\n$ {printf("achou comentario 1 linha"); }
-\/\*.*\*\/ {printf("achou comentario varias linhas");}
+
+\/\*.*[^\*^\/]$ {printf("comentario linha multipla terminando sem o */ "); return TOKEN_ERRO;}
+(^\".*\n.*\"$)|(^\".*[^\"]$) {return TOKEN_ERRO;}
+^\'..+\'$ {printf("char com mais de um caractere "); return TOKEN_ERRO;}
+^\'\'$ {printf("char vazio "); return TOKEN_ERRO;}
+
+\/\/.* {printf("achou comentario 1 linha "); return 0;}
+\/\*.*\*\/ {printf("achou comentario varias linhas "); return 0;}
 
 ^\,$ {return (int)',' ;}
 ^\;$ {return (int)';' ;}
@@ -85,9 +91,14 @@ int get_line_number(void) {
 ^(end)$ {return TK_PR_END;}
 ^(default)$ {return TK_PR_DEFAULT;}
 
-
 ^[-|+]?[0-9]+$ {return TK_LIT_INT;}
+^\".*\"$ {return TK_LIT_STRING;}
+^\'.\'$ {return TK_LIT_CHAR;}
+^false$ {return TK_LIT_FALSE;}
+^true$ {return TK_LIT_TRUE;}
 
-^(false)$ {return TK_LIT_FALSE;}
+^[a-zA-Z][a-zA-Z0-9_]*$ {return TK_IDENTIFICADOR;}
+
+.* {return TOKEN_ERRO;}
 
 %%
