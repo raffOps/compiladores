@@ -1,12 +1,9 @@
-"DFDSF"
-1245
-'A'
-'AA'
-"dkjfd
-+585477
-''
-/* comentario varias linhas errado
--88777
-"hhhhbb\ndfsdf"
-contador
-else
+int a = 1;
+"dffdf" == "dfdffdf";
+while True
+a >> b;
+printf("ola mundo");
+float a = 2 + 3;
+["dfdkjfksdjf", 'a', 67736];
+switch(a) {case 1: printf("caso 1"); break; default: printf("default")};
+false == true;
