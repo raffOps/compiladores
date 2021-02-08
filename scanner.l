@@ -16,7 +16,7 @@ int get_line_number(void) {
 \/\*.*\*\/ {}
 
 \/\*.*[^\*^\/]$ {return TOKEN_ERRO;}
-(^\".*\n.*\"$)|(^\".*[^\"]$) {return TOKEN_ERRO;}
+(\".*\n.*\")|(\".*[^\"]) {return TOKEN_ERRO;}
 ^\'..+\' {return TOKEN_ERRO;}
 ^\'\' {return TOKEN_ERRO;}
 
