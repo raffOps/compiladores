@@ -1,3 +1,7 @@
+cria_entregavel:
+	flex scanner.l
+	gcc lex.yy.c -o etapa1 -lfl
+
 flex:
 	flex scanner.l
 
