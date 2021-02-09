@@ -1,13 +1,13 @@
 int a = 1;
 "dffdf" == "dfdffdf";
-while True
+while true
 a >> b;
 printf("ola mundo");
 float a = 2 + 3;
 ["dfdkjfksdjf", 'a', 67736];
 switch(a) {case 1: printf("caso 1"); break; default: printf("default")};
 false == true;
-"dfdfdsfdf
-dfdssfsdf"
+"dfdfdsfdfdfdssfsdf"
 "aaaaaaaaaaaaa
 '''
+''''
