@@ -9,7 +9,16 @@ int get_line_number(void) {
 }
 %}
 
+%x comentario
+
 %%
+
+"/*" {BEGIN(comentario);}
+<comentario>[^*\n]*        /* eat anything that's not a '*' */
+<comentario>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
+<comentario>\n             ++line_number;
+<comentario>"*"+"/"        BEGIN(INITIAL);
+
 \n {line_number++;}
 
 \/\/.* {}

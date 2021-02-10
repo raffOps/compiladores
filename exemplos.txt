@@ -4,6 +4,7 @@ while true
 a >> b;
 printf("ola mundo");
 float a = 2 + 3;
+/*
 ["dfdkjfksdjf", 'a', 67736];
 switch(a) {case 1: printf("caso 1"); break; default: printf("default")};
 false == true;
@@ -13,6 +14,7 @@ false == true;
 ''''
 54.2
 .2
+*/
 1.222e-10
 1.222e10
 1.22ea
