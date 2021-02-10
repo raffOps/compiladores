@@ -16,14 +16,12 @@ int get_line_number(void) {
 "/*" {BEGIN(comentario);}
 <comentario>[^*\n]*        /* eat anything that's not a '*' */
 <comentario>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
-<comentario>\n             ++line_number;
 <comentario>"*"+"/"        BEGIN(INITIAL);
+<comentario><<EOF>>    {BEGIN(INITIAL); return TOKEN_ERRO;}
+<INITIAL,comentario>\n {line_number++;}
 
-\n {line_number++;}
+"//".*$ {}
 
-\/\/[^\n]+ {}
-\/\*.*\*\/ {}
-\/\*[^\*\/]* {return TOKEN_ERRO;}
 \'\' {return TOKEN_ERRO;}
 \'.\' {return TK_LIT_CHAR;}
 '..+' {return TOKEN_ERRO;}
