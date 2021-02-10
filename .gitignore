@@ -1,1 +1,5 @@
 .idea
+entrega/
+analisador
+etapa1
+lex.yy.c
