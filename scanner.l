@@ -18,7 +18,12 @@ int get_line_number(void) {
 \'.\' {return TK_LIT_CHAR;}
 '..+' {return TOKEN_ERRO;}
 '.[^']+ {return TOKEN_ERRO;}
-[-|+]?[0-9]+\.[^0-9]* {return TOKEN_ERRO;}
+
+[-|+]?[0-9]+\.[^0-9|\n]* {return TOKEN_ERRO;}
+[0-9]\.[0-9]+e[^0-9|\n]* {return TOKEN_ERRO;}
+[-|+]?[0-9]+[^0-9|\n]* {return TOKEN_ERRO;}
+\.[0-9]* {return TOKEN_ERRO;}
+
 
 \"[^\"]*\"  {return TK_LIT_STRING;}
 \"[^"|^\n]* {return TOKEN_ERRO;}
