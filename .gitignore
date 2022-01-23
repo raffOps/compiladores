@@ -3,3 +3,5 @@ entrega/
 analisador
 etapa1
 lex.yy.c
+CMakeLists.txt
+cmake-build-debug

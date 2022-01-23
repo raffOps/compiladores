@@ -1,0 +1,26 @@
+// Aquecimento
+// imprimir 10 linhas, de 1 a 10, cada uma com os números de um ao numero da linha
+
+// TASK 0 
+// Imprimir uma função em C com n parâmetros int
+
+// TASK 1 
+// contar quantos números existem 
+// arquivo in1.txt
+// resposta: 33
+
+
+// TASK 2 
+// imprimir quantos números existem em cada linha lógica terminada por ;
+// arquivo in2.txt
+// resposta: 1 1 1 3 12 3 5 2 1 2 1 4 2 2 2 3 3 1 
+
+
+// TASK 3 
+// Fazer a tarefa 2 contando o número de linhas físicas no mesmo arquivo in2.txt
+
+
+// TASK 4 
+// Ler o arquivo in4.txt e fazer a soma dos números em cada nível de parênteses (contando ou não os que estão dentro de outro nível), imprimindo o número da linha onde inicia cada grupo entre parênteses. 
+
+
