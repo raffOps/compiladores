@@ -12,9 +12,9 @@ extern FILE *yyin;
 extern char *yytext;
 extern int get_line_number (void);
 #define print_nome(TOKEN) \
-    printf("%d " #TOKEN " [%s]\n", get_line_number(), yytext);
-#define print_nome2(TOKEN) \
-    printf("%d TK_ESPECIAL [%c]\n", get_line_number(), TOKEN);
+    printf("%d " #TOKEN " [%s]\n", get_line_number(), TOKEN);
+// #define print_nome2(TOKEN) \
+//    printf("%d TK_ESPECIAL [%c]\n", get_line_number(), TOKEN);
 
 int main (int argc, char **argv)
 {
@@ -32,62 +32,38 @@ int main (int argc, char **argv)
     case '}':
     case '+':
     case '-':
-    case '|':
     case '*':
     case '/':
     case '<':
     case '>':
-    case '=':
-    case '!':
-    case '&':
-    case '%':
-    case '#':
-    case '^':
-    case '.':
-    case '$': print_nome2 (token); break;
-    case TK_PR_INT: print_nome(TK_PR_INT); break;
-    case TK_PR_FLOAT: print_nome(TK_PR_FLOAT); break;
-    case TK_PR_BOOL: print_nome (TK_PR_BOOL); break;
-    case TK_PR_CHAR: print_nome (TK_PR_CHAR); break;
-    case TK_PR_STRING: print_nome (TK_PR_STRING); break;
-    case TK_PR_IF: print_nome (TK_PR_IF); break;
-    case TK_PR_THEN: print_nome (TK_PR_THEN); break;
-    case TK_PR_ELSE: print_nome (TK_PR_ELSE); break;
-    case TK_PR_WHILE: print_nome (TK_PR_WHILE); break;
-    case TK_PR_DO: print_nome (TK_PR_DO); break;
-    case TK_PR_INPUT: print_nome (TK_PR_INPUT); break;
-    case TK_PR_OUTPUT: print_nome (TK_PR_OUTPUT); break;
-    case TK_PR_RETURN: print_nome (TK_PR_RETURN); break;
-    case TK_PR_CONST: print_nome (TK_PR_CONST); break;
-    case TK_PR_STATIC: print_nome (TK_PR_STATIC); break;
-    case TK_PR_FOREACH: print_nome (TK_PR_FOREACH); break;
-    case TK_PR_FOR: print_nome (TK_PR_FOR); break;
-    case TK_PR_SWITCH: print_nome (TK_PR_SWITCH); break;
-    case TK_PR_CASE: print_nome (TK_PR_CASE); break;
-    case TK_PR_BREAK: print_nome (TK_PR_BREAK); break;
-    case TK_PR_CONTINUE: print_nome (TK_PR_CONTINUE); break;
-    case TK_PR_CLASS: print_nome (TK_PR_CLASS); break;
-    case TK_PR_PRIVATE: print_nome (TK_PR_PRIVATE); break;
-    case TK_PR_PUBLIC: print_nome (TK_PR_PUBLIC); break;
-    case TK_PR_PROTECTED: print_nome (TK_PR_PROTECTED); break;
-    case TK_PR_END: print_nome (TK_PR_END); break;
-    case TK_PR_DEFAULT: print_nome (TK_PR_DEFAULT); break;
-    case TK_OC_LE: print_nome (TK_OC_LE); break;
-    case TK_OC_GE: print_nome (TK_OC_GE); break;
-    case TK_OC_EQ: print_nome (TK_OC_EQ); break;
-    case TK_OC_NE: print_nome (TK_OC_NE); break;
-    case TK_OC_AND: print_nome (TK_OC_AND); break;
-    case TK_OC_OR: print_nome (TK_OC_OR); break;
-    case TK_OC_SL: print_nome (TK_OC_SL); break;
-    case TK_OC_SR: print_nome (TK_OC_SR); break;
-    case TK_LIT_INT: print_nome (TK_LIT_INT); break;
-    case TK_LIT_FLOAT: print_nome (TK_LIT_FLOAT); break;
-    case TK_LIT_FALSE: print_nome (TK_LIT_FALSE); break;
-    case TK_LIT_TRUE: print_nome (TK_LIT_TRUE); break;
-    case TK_LIT_CHAR: print_nome (TK_LIT_CHAR); break;
-    case TK_LIT_STRING: print_nome (TK_LIT_STRING); break;
-    case TK_IDENTIFICADOR: print_nome (TK_IDENTIFICADOR); break;
-    case TOKEN_ERRO:  print_nome (TOKEN_ERRO); break;
+    case '=': print_nome(token); break;
+
+    case KW_CHAR: print_nome(KW_CHAR); break;
+    case KW_INT: print_nome(KW_INT); break;
+    case KW_FLOAT: print_nome(KW_FLOAT); break;
+
+    case KW_IF: print_nome(KW_IF); break;
+    case KW_THEN: print_nome(KW_THEN); break;
+    case KW_ELSE: print_nome(KW_ELSE); break;
+
+    case KW_WHILE: print_nome(KW_WHILE); break;
+    case KW_GOTO: print_nome(KW_GOTO); break;
+    case KW_READ: print_nome(KW_READ); break;
+    case KW_PRINT: print_nome(KW_PRINT); break;
+    case KW_RETURN: print_nome(KW_RETURN); break;
+
+    case OPERATOR_LE: print_nome(OPERATOR_LE); break;
+    case OPERATOR_GE: print_nome(OPERATOR_GE); break;
+    case OPERATOR_EQ: print_nome(OPERATOR_EQ); break;
+    case OPERATOR_DIF: print_nome(OPERATOR_DIF); break;
+
+    case TK_IDENTIFIER: print_nome(TK_IDENTIFIER); break;
+    
+    case LIT_INTEGER: print_nome(LIT_INTEGER); break;
+    case LIT_CHAR: print_nome(LIT_CHAR); break;
+    case LIT_STRING: print_nome(LIT_STRING); break;
+
+    case TOKEN_ERROR: print_nome(TOKEN_ERROR); break;
     default: printf ("<Invalid Token with code %d>\n", token); return 1; break;
     }
   }

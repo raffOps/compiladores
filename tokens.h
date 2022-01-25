@@ -1,52 +1,39 @@
 /*
-Lista dos tokens, com valores constantes associados.  Este arquivo
-será posterioremente substituído, não acrescente nada.  Os valores das
-constantes sao arbitrários, mas não podem ser alterados.  Cada valor
-deve ser distinto e fora da escala ASCII.  Assim, não conflitam entre
-si e com os tokens representados pelo próprio valor ASCII de
-caracteres isolados.
-*/
+ * Compiladores - etapa1 - tokens.h - semestre ERE 2021/2 - M Johann
+ *
+ * Lista dos tokens, com valores constantes associados.
+ * Este arquivo serah posterioremente substituido, nao acrescente nada.
+ * Os valores das constantes sao arbitrarios, mas nao podem ser alterados.
+ * Cada valor deve ser distinto e fora da escala ascii.
+ * Assim, nao conflitam entre si e com os tokens representados pelo proprio
+ * valor ascii de caracteres isolados.
+ */
 
-#define TK_PR_INT          256
-#define TK_PR_FLOAT        257
-#define TK_PR_BOOL         258
-#define TK_PR_CHAR         259
-#define TK_PR_STRING       260
-#define TK_PR_IF           261
-#define TK_PR_THEN         262
-#define TK_PR_ELSE         263
-#define TK_PR_WHILE        264
-#define TK_PR_DO           265
-#define TK_PR_INPUT        266
-#define TK_PR_OUTPUT       267
-#define TK_PR_RETURN       268
-#define TK_PR_CONST        269
-#define TK_PR_STATIC       270
-#define TK_PR_FOREACH      271
-#define TK_PR_FOR          272
-#define TK_PR_SWITCH       273
-#define TK_PR_CASE         274
-#define TK_PR_BREAK        275
-#define TK_PR_CONTINUE     276
-#define TK_PR_CLASS        277
-#define TK_PR_PRIVATE      278
-#define TK_PR_PUBLIC       279
-#define TK_PR_PROTECTED    280
-#define TK_OC_LE           281
-#define TK_OC_GE           282
-#define TK_OC_EQ           283
-#define TK_OC_NE           284
-#define TK_OC_AND          285
-#define TK_OC_OR           286
-#define TK_OC_SL           287
-#define TK_OC_SR           288
-#define TK_LIT_INT         291
-#define TK_LIT_FLOAT       292
-#define TK_LIT_FALSE       293
-#define TK_LIT_TRUE        294
-#define TK_LIT_CHAR        295
-#define TK_LIT_STRING      296
-#define TK_IDENTIFICADOR   297
-#define TOKEN_ERRO         298
-#define TK_PR_END          299
-#define TK_PR_DEFAULT      300
+#define KW_CHAR           256
+#define KW_INT            257
+#define KW_FLOAT          258
+
+#define KW_IF             261
+#define KW_THEN           262
+#define KW_ELSE           263
+#define KW_WHILE          264
+#define KW_GOTO           265
+#define KW_READ           266
+#define KW_PRINT          267
+#define KW_RETURN         268
+
+#define OPERATOR_LE       270
+#define OPERATOR_GE       271
+#define OPERATOR_EQ       272
+#define OPERATOR_DIF      273
+
+#define TK_IDENTIFIER     280
+
+#define LIT_INTEGER       281
+#define LIT_CHAR          285
+#define LIT_STRING        286
+
+#define TOKEN_ERROR       290
+
+/* END OF FILE */
+
