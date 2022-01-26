@@ -12,7 +12,7 @@ run: flex gcc_l
 	./analisador
 
 test:
-	cat exemplos.txt | make run
+	cat exemplos.txt | ./analisador
 
 clean:
-	rm *.o lex.yy.c etapa1
+	rm -f *.o lex.yy.c etapa1 analisador

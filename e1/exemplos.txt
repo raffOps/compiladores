@@ -6,7 +6,7 @@ float a = 2 + 3;
 ["dfdkjfksdjf", 'a', 67736 ];
 false == true;
 "dfdfdsfdfdfdssfsdf"
-"aaaaaaaaaaaaa
+printf("aaaaaaaaaaaaa
 '''
 ''''
 abc123

@@ -5,6 +5,7 @@ Este arquivo será posterioremente substituído, não acrescente nada.
 */
 #include <stdio.h>
 #include "tokens.h"
+#include "hash.c"
 extern int yylex(void);
 extern int yylex_destroy(void);
 
@@ -64,6 +65,7 @@ int main (int argc, char **argv)
     case TOKEN_ERROR: print_nome(TOKEN_ERROR); break;
     default: printf ("<Invalid Token with code %d>\n", token); return 1; break;
     }
+    //display_hashtable();
   }
   yylex_destroy();
   return 0;

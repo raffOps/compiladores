@@ -23,7 +23,7 @@ int get_line_number(void) {
 "//".*$ {}
 
 \'\' {return TOKEN_ERROR;}
-\'.\' {return LIT_CHAR;}
+\'.\' {insert_in_hashtable(LIT_CHAR, yylex); return LIT_CHAR;}
 '..+' {return TOKEN_ERROR;}
 '.[^']+ {return TOKEN_ERROR;}
 
@@ -33,7 +33,7 @@ int get_line_number(void) {
 \.[0-9]* {return TOKEN_ERROR;}
 
 
-\"[^\"|\n]*\"  {return LIT_STRING;}
+\"[^\"|\n]*\"  {insert_in_hashtable(LIT_STRING, yylex); return LIT_STRING;}
 \"[^\n|\"]* {return TOKEN_ERROR;}
 
 \, {return (int)',' ;}
@@ -71,9 +71,13 @@ print {return KW_PRINT;}
 return {return KW_RETURN;}
 
 
-[-|+]?[0-9]+ {return LIT_INTEGER;}
+[-|+]?[0-9]+ {insert_in_hashtable(LIT_INTEGER, yylex); return LIT_INTEGER;}
 
-[a-zA-Z][a-zA-Z0-9_]* {return TK_IDENTIFIER;}
+[a-z][a-z_]* {insert_in_hashtable(TK_IDENTIFIER, yylex); return TK_IDENTIFIER;}
+
+[a-zA-Z][a-zA-Z]*[0-9]+ {return TOKEN_ERROR;}
+
+
 
 %%
 
