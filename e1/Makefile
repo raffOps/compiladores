@@ -1,18 +1,17 @@
-cria_entregavel:
-	flex scanner.l
-	gcc lex.yy.c -o etapa1 -lfl
+etapa1: lex
+	gcc lex.yy.c -o etapa1 
 
-flex:
-	flex scanner.l
+lex:
+	lex scanner.l
 
-gcc_l:
-	gcc lex.yy.c -o analisador -lfl
+gcc_l: lex
+	gcc lex.yy.c -o analisador 
 
-run: flex gcc_l
+run: gcc_l
 	./analisador
 
-test:
+test: gcc_l
 	cat exemplos.txt | ./analisador
 
 clean:
-	rm -f *.o lex.yy.c etapa1 analisador
+	rm -f *.o lex.yy.c etapa1 analisador .DS_Store

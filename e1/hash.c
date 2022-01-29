@@ -1,113 +1,50 @@
-#include <stdio.h>
+#include "hash.h"
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
-#include "tokens.h"
+HASH_NODE*Table[HASH_SIZE];
 
-#define SIZE 20
-
-struct tokens_hashtable {
-   char data[20];
-   int key;
-};
-
-struct tokens_hashtable* hashArray[SIZE];
-struct tokens_hashtable* dummyItem;
-struct tokens_hashtable* item;
-
-int hashCode(int key) {
-   return key % SIZE;
+void hashInit(void) {
+    int i;
+    for (i=0; i<HASH_SIZE; i++)
+        Table[i]=0;
 }
 
-struct tokens_hashtable *search(int key) {
-   //get the hash 
-   int hashIndex = hashCode(key);  
-	
-   //move in array until an empty 
-   while(hashArray[hashIndex] != NULL) {
-	
-      if(hashArray[hashIndex]->key == key)
-         return hashArray[hashIndex]; 
-			
-      //go to next cell
-      ++hashIndex;
-		
-      //wrap around the table
-      hashIndex %= SIZE;
-   }        
-	
-   return NULL;        
+int hashAddress(char *text) {
+    int address = 1;
+    int i;
+    for(i=0; i<strlen(text); ++i)
+        address = (address * text[i]) % HASH_SIZE + 1;
+    return address-1;
 }
 
-void insert_in_hashtable(int key, char **data) {
-
-   struct tokens_hashtable *item = (struct tokens_hashtable*) malloc(sizeof(struct tokens_hashtable));
-   strcpy(item->data, data);
-   item->key = key;
-
-   //get the hash 
-   int hashIndex = hashCode(key);
-
-   //move in array until an empty or deleted cell
-   while(hashArray[hashIndex] != NULL && hashArray[hashIndex]->key != -1) {
-      //go to next cell
-      ++hashIndex;
-		
-      //wrap around the table
-      hashIndex %= SIZE;
-   }
-	
-   hashArray[hashIndex] = item;
+HASH_NODE *hashFind(char *text) {
+    HASH_NODE *node;
+    int address = hashAddress(text);
+    for (node=Table[address]; node; node=node->next)
+        if (strcmp(node->text, text) == 0)
+            return node;
+    return 0;
 }
 
-struct tokens_hashtable* delete_from_hashtable(struct tokens_hashtable* item) {
-   int key = item->key;
-
-   //get the hash 
-   int hashIndex = hashCode(key);
-
-   //move in array until an empty
-   while(hashArray[hashIndex] != NULL) {
-	
-      if(hashArray[hashIndex]->key == key) {
-         struct tokens_hashtable* temp = hashArray[hashIndex];
-			
-         //assign a dummy item at deleted position
-         hashArray[hashIndex] = dummyItem; 
-         return temp;
-      }
-		
-      //go to next cell
-      ++hashIndex;
-		
-      //wrap around the table
-      hashIndex %= SIZE;
-   }      
-	
-   return NULL;        
+HASH_NODE *hashInsert(char *text, int type) {
+    HASH_NODE *newnode;
+    int address = hashAddress(text);
+    if ((newnode = hashFind(text) != 0))
+        return newnode;
+    newnode = (HASH_NODE*) calloc(1, sizeof(HASH_NODE));
+    newnode->type = type;
+    newnode->text = (char*) calloc(strlen(text)+1, sizeof(char));
+    strcpy(newnode->text, text);
+    newnode->next = Table[address];
+    Table[address] = newnode;
+    return newnode;
 }
 
-void display_hashtable() {
-   int i = 0;
-	
-   for(i = 0; i<SIZE; i++) {
-	
-      if(hashArray[i] != NULL)
-         printf(" (%d,%d)",hashArray[i]->key,hashArray[i]->data);
-      else
-         printf(" ~~ ");
-   }
-	
-   printf("\n");
+void hashPrint(void) {
+    int i;
+    HASH_NODE *node;
+    for (i=0;i<HASH_SIZE; ++i)
+        for (node=Table[i]; node; node = node->next)
+            printf("Table[%d] has %s\n");
 }
-
-// int main() {
-//    dummyItem = (struct tokens_hashtable*) malloc(sizeof(struct tokens_hashtable));
-// //   strcpy(dummyItem->data, "");
-// //   dummyItem->key = -1;
-//     insert_in_hashtable(TK_IDENTIFIER, "AJC");
-//     insert_in_hashtable(LIT_INTEGER, "70");
-//     insert_in_hashtable(LIT_STRING, "\"ksdsjhf\"");
-//    display();
-// }

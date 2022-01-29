@@ -7,10 +7,11 @@ float a = 2 + 3;
 false == true;
 "dfdfdsfdfdfdssfsdf"
 printf("aaaaaaaaaaaaa
-'''
-''''
+"ola mundo
+//dfpdsfsdf
+4
+/*lsdhfguerdfhdfg */
+/*lsdhfguerdfhdfg   */
+//rfgdfgdfgfgd
 abc123
-123abc
-////dfsdfsdf
-/*fdsdfsdf8*/
-/*dsfdsf
+{}

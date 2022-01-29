@@ -5,15 +5,16 @@ Este arquivo será posterioremente substituído, não acrescente nada.
 */
 #include <stdio.h>
 #include "tokens.h"
-#include "hash.c"
 extern int yylex(void);
 extern int yylex_destroy(void);
 
 extern FILE *yyin;
 extern char *yytext;
-extern int get_line_number (void);
+extern int getLineNumber (void);
+extern int isRunning (void);
+extern void hashInit (void);
 #define print_nome(TOKEN) \
-    printf("%d " #TOKEN " [%s]\n", get_line_number(), yytext);
+    printf("%d " #TOKEN " [%s]\n", getLineNumber(), yytext);
 
 int main (int argc, char **argv)
 {

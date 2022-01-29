@@ -1,12 +1,22 @@
 %{
 #include <stdio.h>
 #include "tokens.h"
-#include "main.c"
+#include "hash.h"
 int line_number = 1;
+int running = 1;
 
-int get_line_number(void) {
+int getLineNumber(void) {
     return line_number;
 }
+
+int isRunning(void) {
+    return running;
+}
+
+void initMe(void) {
+  hashInit();
+}
+
 %}
 
 %x comentario
@@ -19,22 +29,12 @@ int get_line_number(void) {
 <comentario>"*"+"/"        BEGIN(INITIAL);
 <comentario><<EOF>>    {BEGIN(INITIAL); return TOKEN_ERROR;}
 <INITIAL,comentario>\n {line_number++;}
+<comentario>. { }
+"//".* {}
 
-"//".*$ {}
+\'.\' {hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
 
-\'\' {return TOKEN_ERROR;}
-\'.\' {insert_in_hashtable(LIT_CHAR, yylex); return LIT_CHAR;}
-'..+' {return TOKEN_ERROR;}
-'.[^']+ {return TOKEN_ERROR;}
-
-[-|+]?[0-9]+\.[^0-9|\n]* {return TOKEN_ERROR;}
-[0-9]\.[0-9]+e[^0-9|\n]* {return TOKEN_ERROR;}
-[-|+]?[0-9]+[a-zA-z]+ {return TOKEN_ERROR;}
-\.[0-9]* {return TOKEN_ERROR;}
-
-
-\"[^\"|\n]*\"  {insert_in_hashtable(LIT_STRING, yylex); return LIT_STRING;}
-\"[^\n|\"]* {return TOKEN_ERROR;}
+\"[^\n]*\"  {return LIT_STRING;}
 
 \, {return (int)',' ;}
 \; {return (int)';' ;}
@@ -71,13 +71,21 @@ print {return KW_PRINT;}
 return {return KW_RETURN;}
 
 
-[-|+]?[0-9]+ {insert_in_hashtable(LIT_INTEGER, yylex); return LIT_INTEGER;}
+[-|+]?[0-9]+ {hashInsert(yytext, LIT_INTEGER); return LIT_INTEGER;}
 
-[a-z][a-z_]* {insert_in_hashtable(TK_IDENTIFIER, yylex); return TK_IDENTIFIER;}
+[a-z][a-z_]* {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}
 
-[a-zA-Z][a-zA-Z]*[0-9]+ {return TOKEN_ERROR;}
-
+. {return TOKEN_ERROR;}
 
 
 %%
+
+#include "main.c"
+#include "hash.c"
+
+
+int yywrap() {
+    running = 0;
+    return 1;
+}
 
