@@ -1,0 +1,386 @@
+Useless nonterminals
+
+   type
+   float_
+   literal
+
+
+Terminals which are not used
+
+   KW_CHAR
+   KW_INT
+   KW_FLOAT
+   KW_IF
+   KW_THEN
+   KW_ELSE
+   KW_WHILE
+   KW_GOTO
+   KW_READ
+   KW_PRINT
+   KW_RETURN
+   LIT_STRING
+   TOKEN_ERROR
+
+
+Useless rules
+
+   23 type: KW_CHAR
+   24     | KW_INT
+   25     | KW_FLOAT
+
+   26 float_: LIT_INTEGER '/' LIT_INTEGER
+
+   27 literal: LIT_CHAR
+   28        | LIT_INTEGER
+   29        | float_
+
+
+State 7 conflicts: 3 shift/reduce
+State 12 conflicts: 1 shift/reduce
+State 13 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: decl
+
+    2 decl: dec decl
+    3     | /* empty */
+
+    4 dec: expression
+
+    5 operand: TK_IDENTIFIER
+    6        | TK_IDENTIFIER '[' LIT_INTEGER ']'
+    7        | LIT_CHAR
+    8        | LIT_INTEGER
+
+    9 operator: '+'
+   10         | '-'
+   11         | '*'
+   12         | '/'
+   13         | OPERATOR_LE
+   14         | OPERATOR_GE
+   15         | OPERATOR_LE OPERATOR_EQ
+   16         | OPERATOR_GE OPERATOR_EQ
+   17         | OPERATOR_EQ
+   18         | OPERATOR_DIF
+
+   19 expression: operand
+   20           | operand aux_expression
+
+   21 aux_expression: operator aux_expression
+   22               | operand
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'*' (42) 11
+'+' (43) 9
+'-' (45) 10
+'/' (47) 12
+'[' (91) 6
+']' (93) 6
+error (256)
+KW_CHAR (258)
+KW_INT (259)
+KW_FLOAT (260)
+KW_IF (261)
+KW_THEN (262)
+KW_ELSE (263)
+KW_WHILE (264)
+KW_GOTO (265)
+KW_READ (266)
+KW_PRINT (267)
+KW_RETURN (268)
+OPERATOR_LE (269) 13 15
+OPERATOR_GE (270) 14 16
+OPERATOR_EQ (271) 15 16 17
+OPERATOR_DIF (272) 18
+TK_IDENTIFIER (273) 5 6
+LIT_INTEGER (274) 6 8
+LIT_CHAR (275) 7
+LIT_STRING (276)
+TOKEN_ERROR (277)
+
+
+Nonterminals, with rules where they appear
+
+$accept (29)
+    on left: 0
+programa (30)
+    on left: 1, on right: 0
+decl (31)
+    on left: 2 3, on right: 1 2
+dec (32)
+    on left: 4, on right: 2
+operand (33)
+    on left: 5 6 7 8, on right: 19 20 22
+operator (34)
+    on left: 9 10 11 12 13 14 15 16 17 18, on right: 21
+expression (35)
+    on left: 19 20, on right: 4
+aux_expression (36)
+    on left: 21 22, on right: 20 21
+
+
+state 0
+
+    0 $accept: . programa $end
+
+    TK_IDENTIFIER  shift, and go to state 1
+    LIT_INTEGER    shift, and go to state 2
+    LIT_CHAR       shift, and go to state 3
+
+    $default  reduce using rule 3 (decl)
+
+    programa    go to state 4
+    decl        go to state 5
+    dec         go to state 6
+    operand     go to state 7
+    expression  go to state 8
+
+
+state 1
+
+    5 operand: TK_IDENTIFIER .
+    6        | TK_IDENTIFIER . '[' LIT_INTEGER ']'
+
+    '['  shift, and go to state 9
+
+    $default  reduce using rule 5 (operand)
+
+
+state 2
+
+    8 operand: LIT_INTEGER .
+
+    $default  reduce using rule 8 (operand)
+
+
+state 3
+
+    7 operand: LIT_CHAR .
+
+    $default  reduce using rule 7 (operand)
+
+
+state 4
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 10
+
+
+state 5
+
+    1 programa: decl .
+
+    $default  reduce using rule 1 (programa)
+
+
+state 6
+
+    2 decl: dec . decl
+
+    TK_IDENTIFIER  shift, and go to state 1
+    LIT_INTEGER    shift, and go to state 2
+    LIT_CHAR       shift, and go to state 3
+
+    $default  reduce using rule 3 (decl)
+
+    decl        go to state 11
+    dec         go to state 6
+    operand     go to state 7
+    expression  go to state 8
+
+
+state 7
+
+   19 expression: operand .
+   20           | operand . aux_expression
+
+    OPERATOR_LE    shift, and go to state 12
+    OPERATOR_GE    shift, and go to state 13
+    OPERATOR_EQ    shift, and go to state 14
+    OPERATOR_DIF   shift, and go to state 15
+    TK_IDENTIFIER  shift, and go to state 1
+    LIT_INTEGER    shift, and go to state 2
+    LIT_CHAR       shift, and go to state 3
+    '/'            shift, and go to state 16
+    '+'            shift, and go to state 17
+    '-'            shift, and go to state 18
+    '*'            shift, and go to state 19
+
+    TK_IDENTIFIER  [reduce using rule 19 (expression)]
+    LIT_INTEGER    [reduce using rule 19 (expression)]
+    LIT_CHAR       [reduce using rule 19 (expression)]
+    $default       reduce using rule 19 (expression)
+
+    operand         go to state 20
+    operator        go to state 21
+    aux_expression  go to state 22
+
+
+state 8
+
+    4 dec: expression .
+
+    $default  reduce using rule 4 (dec)
+
+
+state 9
+
+    6 operand: TK_IDENTIFIER '[' . LIT_INTEGER ']'
+
+    LIT_INTEGER  shift, and go to state 23
+
+
+state 10
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+state 11
+
+    2 decl: dec decl .
+
+    $default  reduce using rule 2 (decl)
+
+
+state 12
+
+   13 operator: OPERATOR_LE .
+   15         | OPERATOR_LE . OPERATOR_EQ
+
+    OPERATOR_EQ  shift, and go to state 24
+
+    OPERATOR_EQ  [reduce using rule 13 (operator)]
+    $default     reduce using rule 13 (operator)
+
+
+state 13
+
+   14 operator: OPERATOR_GE .
+   16         | OPERATOR_GE . OPERATOR_EQ
+
+    OPERATOR_EQ  shift, and go to state 25
+
+    OPERATOR_EQ  [reduce using rule 14 (operator)]
+    $default     reduce using rule 14 (operator)
+
+
+state 14
+
+   17 operator: OPERATOR_EQ .
+
+    $default  reduce using rule 17 (operator)
+
+
+state 15
+
+   18 operator: OPERATOR_DIF .
+
+    $default  reduce using rule 18 (operator)
+
+
+state 16
+
+   12 operator: '/' .
+
+    $default  reduce using rule 12 (operator)
+
+
+state 17
+
+    9 operator: '+' .
+
+    $default  reduce using rule 9 (operator)
+
+
+state 18
+
+   10 operator: '-' .
+
+    $default  reduce using rule 10 (operator)
+
+
+state 19
+
+   11 operator: '*' .
+
+    $default  reduce using rule 11 (operator)
+
+
+state 20
+
+   22 aux_expression: operand .
+
+    $default  reduce using rule 22 (aux_expression)
+
+
+state 21
+
+   21 aux_expression: operator . aux_expression
+
+    OPERATOR_LE    shift, and go to state 12
+    OPERATOR_GE    shift, and go to state 13
+    OPERATOR_EQ    shift, and go to state 14
+    OPERATOR_DIF   shift, and go to state 15
+    TK_IDENTIFIER  shift, and go to state 1
+    LIT_INTEGER    shift, and go to state 2
+    LIT_CHAR       shift, and go to state 3
+    '/'            shift, and go to state 16
+    '+'            shift, and go to state 17
+    '-'            shift, and go to state 18
+    '*'            shift, and go to state 19
+
+    operand         go to state 20
+    operator        go to state 21
+    aux_expression  go to state 26
+
+
+state 22
+
+   20 expression: operand aux_expression .
+
+    $default  reduce using rule 20 (expression)
+
+
+state 23
+
+    6 operand: TK_IDENTIFIER '[' LIT_INTEGER . ']'
+
+    ']'  shift, and go to state 27
+
+
+state 24
+
+   15 operator: OPERATOR_LE OPERATOR_EQ .
+
+    $default  reduce using rule 15 (operator)
+
+
+state 25
+
+   16 operator: OPERATOR_GE OPERATOR_EQ .
+
+    $default  reduce using rule 16 (operator)
+
+
+state 26
+
+   21 aux_expression: operator aux_expression .
+
+    $default  reduce using rule 21 (aux_expression)
+
+
+state 27
+
+    6 operand: TK_IDENTIFIER '[' LIT_INTEGER ']' .
+
+    $default  reduce using rule 6 (operand)
