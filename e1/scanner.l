@@ -23,14 +23,16 @@ void initMe(void) {
 
 %%
 
-"/*" {BEGIN(comentario);}
-<comentario>[^*\n]*        /* eat anything that's not a '*' */
-<comentario>"*"+[^*/\n]*   /* eat up '*'s not followed by '/'s */
-<comentario>"*"+"/"        BEGIN(INITIAL);
-<comentario><<EOF>>    {BEGIN(INITIAL); return TOKEN_ERROR;}
-<INITIAL,comentario>\n {line_number++;}
-<comentario>. { }
-"//".* {}
+"\\*" {BEGIN(comentario);}
+<comentario>"\n"        {line_number++;}
+<comentario>"\*\\"     BEGIN(INITIAL);
+<comentario>. {}
+
+"\n" {line_number++;}
+"\\\\".* {}
+[ \t]  {}
+
+
 
 \'.\' {hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
 
@@ -73,7 +75,7 @@ return {return KW_RETURN;}
 
 [-|+]?[0-9]+ {hashInsert(yytext, LIT_INTEGER); return LIT_INTEGER;}
 
-[a-z][a-z_]* {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}
+[a-z_-]+ {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}
 
 . {return TOKEN_ERROR;}
 

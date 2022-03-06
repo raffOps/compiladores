@@ -5,3 +5,12 @@ etapa1
 lex.yy.c
 CMakeLists.txt
 cmake-build-debug
+e2/input.txt
+.DS_Store
+*.tgz
+e2/.vscode/c_cpp_properties.json
+y.tab.c
+y.tab.h
+lex.yy.c
+lex.yy.h
+etapa*

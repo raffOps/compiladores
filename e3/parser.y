@@ -1,3 +1,18 @@
+%{
+    #include <stdlib.h>
+    #include "hash.h"
+    #include "ast.h"
+    int yyerror();
+    int getLineNumber();
+    int yylex();
+%}
+
+%union
+{
+    HASH_NODE *symbol;
+    AST *ast;
+}
+
 %token KW_CHAR           
 %token KW_INT            
 %token KW_FLOAT          
@@ -13,11 +28,14 @@
 %token OPERATOR_GE       
 %token OPERATOR_EQ       
 %token OPERATOR_DIF      
-%token TK_IDENTIFIER     
-%token LIT_INTEGER       
-%token LIT_CHAR          
+%token<symbol> TK_IDENTIFIER
+
+%token<symbol> LIT_INTEGER       
+%token<symbol> LIT_CHAR          
 %token LIT_STRING        
-%token TOKEN_ERROR       
+%token TOKEN_ERROR
+
+%type<ast> expression 
 
 %left '*' '/'
 %left '+' '-'
@@ -76,7 +94,7 @@ function_header: type TK_IDENTIFIER '(' function_arguments ')'
     | type TK_IDENTIFIER '(' ')'
     ;
 
-function_body: block_command
+function_body: simple_command
     ;
 
 
@@ -98,7 +116,7 @@ command_list: simple_command ';' command_list
     ;
 // // Comandos simples 
 
-assignment: TK_IDENTIFIER '=' expression
+assignment: TK_IDENTIFIER '=' expression { astPrint($3, 0); }
     |  TK_IDENTIFIER '[' expression ']' '=' expression
     ;
 print_argument: LIT_STRING
@@ -120,14 +138,14 @@ parameter_list: expression ',' parameter_list
     ;
 
 
-expression:   TK_IDENTIFIER '('   ')'
-    | TK_IDENTIFIER '(' parameter_list  ')'
-    | TK_IDENTIFIER '[' expression ']'
-    | TK_IDENTIFIER 
-    | LIT_INTEGER
-    | LIT_CHAR
-    | expression '+' expression
-    | expression '-' expression
+expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+    | TK_IDENTIFIER '(' parameter_list  ')' { $$ = 0;}
+    | TK_IDENTIFIER '[' expression ']' { $$ = 0;}
+    | TK_IDENTIFIER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+    | LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+    | LIT_CHAR {fprintf(stderr, "Recebi %s\n", $1->text);}
+    | expression '+' expression {$$ = astCreate(AST_ADD, 0, $1, $3, 0, 0); }
+    | expression '-' expression {$$ = astCreate(AST_SUB, 0, $1, $3, 0, 0); }
     | expression '*' expression
     | expression '/' expression
     | expression '<' expression
@@ -136,8 +154,8 @@ expression:   TK_IDENTIFIER '('   ')'
     | expression OPERATOR_GE expression
     | expression OPERATOR_EQ expression
     | expression OPERATOR_DIF expression
-    | '(' expression ')'
-    | KW_READ
+    | '(' expression ')' { $$ = $2;}
+    | KW_READ { $$ = 0;}
     ;
 
 // Comandos de Controle de de Fluxo 

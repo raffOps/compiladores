@@ -8,10 +8,15 @@ false == true;
 "dfdfdsfdfdfdssfsdf"
 printf("aaaaaaaaaaaaa
 "ola mundo
-//dfpdsfsdf
+\\dfpdsfsdf
 4
-/*lsdhfguerdfhdfg */
-/*lsdhfguerdfhdfg   */
-//rfgdfgdfgfgd
+\*lsdhfguerdfhdfg *\
+\*lsdhfguerdfhdfg   *\
+\\rfgdfgdfgfgd
+\* dsfkhsdfasdfadsf
+dfsdfasdfa
+*\
 abc123
 {}
+_juhfsd
+-dklfd

@@ -1,6 +1,8 @@
 %{    
-#include "y.tab.h"
 #include "hash.h"
+#include "ast.h"
+#include "y.tab.h"
+
 
 int line_number = 1;
 int running = 1;
@@ -33,7 +35,8 @@ int yyerror();
 "\\\\".* {}
 [ \t]  {}
 
-\'.\' {hashInsert(yytext, LIT_CHAR); return LIT_CHAR;}
+\'.\' {yylval.symbol = hashInsert(yytext, LIT_CHAR); 
+        return LIT_CHAR;}
 
 \"[^\"\n]*\"  {return LIT_STRING;}
 
@@ -74,18 +77,17 @@ print {return KW_PRINT;}
 return {return KW_RETURN;}
 
 
-[0-9]+ {hashInsert(yytext, LIT_INTEGER); return LIT_INTEGER;}
+[0-9]+ { yylval.symbol = hashInsert(yytext, LIT_INTEGER);
+         return LIT_INTEGER;}
 
-[a-z_-]+ {hashInsert(yytext, TK_IDENTIFIER); return TK_IDENTIFIER;}
+[a-z_-]+ { yylval.symbol = hashInsert(yytext, TK_IDENTIFIER); 
+            return TK_IDENTIFIER;}
 
 . {return TOKEN_ERROR;}
 
 
 %%
 
-#include "y.tab.c"
-#include "main.c"
-#include "hash.c"
 
 int yywrap() {
     running = 0;

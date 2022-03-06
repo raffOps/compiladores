@@ -10,5 +10,8 @@ parser: parser.y
 test: etapa2
 	@./etapa2 input.txt
 
+zip: etapa2
+	tar cvzf etapa2.tgz .
+
 clean:
-	@rm -f *.o lex.yy.c etapa1 etapa2 .DS_Store y.tab.c y.tab.h
+	@rm -f *.o *.tgz lex.yy.c etapa1 etapa2 .DS_Store y.tab.c y.tab.h *.output
