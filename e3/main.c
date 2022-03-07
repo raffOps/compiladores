@@ -30,7 +30,7 @@ int main (int argc, char **argv)
   }
   int token;
   yyparse();  
-  hashPrint();
+  //hashPrint();
   fprintf(stderr, "Compilation successful!\n");
   exit(0);
 }

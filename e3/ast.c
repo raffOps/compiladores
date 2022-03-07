@@ -28,16 +28,94 @@ void astPrint(AST *node, int level) {
     
     case AST_SUB: fprintf(stderr, "AST_SUB");
         break;
+
+    case AST_MUL: fprintf(stderr, "AST_MUL");
+        break;
     
+    case AST_DIV: fprintf(stderr, "AST_DIV");
+        break;
+
+    case AST_GT: fprintf(stderr, "AST_GT");
+        break;
+    
+    case AST_LT: fprintf(stderr, "AST_LT");
+        break;
+
+    case AST_LE: fprintf(stderr, "AST_LE");
+        break;
+    
+    case AST_GE: fprintf(stderr, "AST_GE");
+        break;
+
+    case AST_EQ: fprintf(stderr, "AST_EQ");
+        break;
+    
+    case AST_DIF: fprintf(stderr, "AST_DIF");
+        break;
+
+    case AST_LCMD: fprintf(stderr, "AST_LCMD");
+        break;
+
+    case AST_LABEL: fprintf(stderr, "AST_LABEL");
+        break;
+
+    case AST_ASSIGMENT: fprintf(stderr, "AST_ASSIGMENT");
+        break;
+    
+    case AST_PARAM_LIST: fprintf(stderr, "AST_PARAM_LIST");
+        break;
+
+    case AST_PRINT_FUN: fprintf(stderr, "AST_PRINT_FUN");
+        break;
+
+    case AST_PRINT_ARGS: fprintf(stderr, "AST_PRINT_ARGS");
+        break;
+    
+    case AST_RETURN: fprintf(stderr, "AST_RETURN");
+        break;
+
+    case AST_IF: fprintf(stderr, "AST_IF");
+        break;
+
+    case AST_IF_ELSE: fprintf(stderr, "AST_IF_ELSE");
+        break;
+
+    case AST_THEN: fprintf(stderr, "AST_THEN");
+        break;
+
+    case AST_WHILE: fprintf(stderr, "AST_WHILE");
+        break;
+
+    case AST_GOTO: fprintf(stderr, "AST_GOTO");
+        break;
+
+    case AST_FUNCTION: fprintf(stderr, "AST_FUNCTION");
+        break;
+
+    case AST_FUNCTION_ARGUMENT: fprintf(stderr, "AST_FUNCTION_ARGUMENT");
+        break;
+
+    case AST_FUNCTION_ARGUMENTS: fprintf(stderr, "AST_FUNCTION_ARGUMENTS");
+        break;
+
+    case AST_LIT_LIST: fprintf(stderr, "AST_LIT_LIST");
+        break;
+        
+    case AST_DECL: fprintf(stderr, "AST_DECL");
+        break;
+
+    case AST_GLOBAL_VARIABLE: fprintf(stderr, "AST_GLOBAL_VARIABLE");
+        break;
+
     default: fprintf(stderr, "AST_UNKNOW");
         break;
     }
 
     if (node->symbol != 0) {
-        fprintf(stderr, ", %s\n", node->symbol->text);
+        fprintf(stderr, ", %s)\n", node->symbol->text);
     }
     else {
-        fprintf(stderr, ", 0\n");
+        fprintf(stderr, ", 0)\n");
     }
 
     for (int i=0; i<MAX_SONS; i++)
