@@ -66,7 +66,7 @@
 
 %%
 
-program: decl {astPrint($1, 0);}
+program: decl {FILE *out; out = fopen("output.txt", "w+");   decompile($1, 0, out); fclose(out);}
     ;
 
 decl: dec decl { $$ = astCreate(AST_DECL, 0, $1, $2, 0, 0);}
@@ -79,9 +79,9 @@ dec: global_variable {$$ = $1;}
     
 // Declarações de variáveis globais 
 
-type: KW_CHAR { $$ = 0;}
-    | KW_INT { $$ = 0;}
-    | KW_FLOAT { $$ = 0;}
+type: KW_CHAR { $$ = astCreate(AST_CHAR, 0, 0, 0, 0, 0); }
+    | KW_INT { $$ = astCreate(AST_INT, 0, 0, 0, 0, 0); }
+    | KW_FLOAT { $$ = astCreate(AST_FLOAT, 0, 0, 0, 0, 0); }
     ;
 
 lit_integer: LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
@@ -103,13 +103,13 @@ lit_list: LIT_INTEGER lit_list {$$ = astCreate(AST_LIT_LIST, $1, $2, 0, 0, 0); }
     ;
 
 global_variable: type identifier ':' literal ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, 0); }
-    | type identifier '[' lit_integer ']' ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, 0, 0); }
-    | type identifier '[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $7, 0); }
+    | type identifier '[' lit_integer ']' ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, 0); }
+    | type identifier '[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, $7); }
     ;
 
 // Definição de funções 
 
-function_argument: type TK_IDENTIFIER  { $$ = astCreate(AST_FUNCTION_ARGUMENT, $2, $1, 0, 0, 0); }
+function_argument: type identifier  { $$ = astCreate(AST_FUNCTION_ARGUMENT, 0, $1, $2, 0, 0); }
 
 
 function_arguments: function_argument ',' function_arguments  { $$ = astCreate(AST_FUNCTION_ARGUMENTS, 0, $1, $3, 0, 0); }
@@ -144,11 +144,11 @@ print_argument: LIT_STRING {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
 print_arguments: print_argument ',' print_arguments {$$ = astCreate(AST_PRINT_ARGS, 0, $1, $3, 0, 0); }
     | print_argument { $$ = $1; }
     ;
-simple_command:  assignment  {$$ = $1;}
-    | KW_PRINT print_arguments { $$ = astCreate(AST_PRINT_FUN, 0, $2, 0, 0,0 ); }
-    | KW_RETURN expression { $$ = astCreate(AST_RETURN, 0, $2, 0, 0, 0 ); }
-    | block_command { $$ = $1; }
-    | control_flow { $$ = $1; }
+simple_command:  assignment  {$$ = $1;} 
+    | KW_PRINT print_arguments   { $$ = astCreate(AST_PRINT_FUN, 0, $2, 0, 0,0 ); }
+    | KW_RETURN expression  { $$ = astCreate(AST_RETURN, 0, $2, 0, 0, 0 ); }
+    | block_command  { $$ = $1; }
+    | control_flow  { $$ = $1; }
     ;
 // // Expressões Aritméticas 
 

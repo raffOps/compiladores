@@ -13,6 +13,7 @@ AST *astCreate(int type, HASH_NODE *symbol, AST* s0, AST* s1, AST* s2, AST* s3){
 
     return newnode;
 }
+
 void astPrint(AST *node, int level) {
     if (node == 0)
         return;
@@ -106,6 +107,15 @@ void astPrint(AST *node, int level) {
 
     case AST_GLOBAL_VARIABLE: fprintf(stderr, "AST_GLOBAL_VARIABLE");
         break;
+    
+    case AST_INT: fprintf(stderr, "AST_INT");
+        break;
+
+    case AST_CHAR: fprintf(stderr, "AST_CHAR");
+        break;
+
+    case AST_FLOAT: fprintf(stderr, "AST_FLOAT");
+        break;
 
     default: fprintf(stderr, "AST_UNKNOW");
         break;
@@ -120,4 +130,188 @@ void astPrint(AST *node, int level) {
 
     for (int i=0; i<MAX_SONS; i++)
         astPrint(node->son[i], level+1);
+}
+
+void decompile(AST *ast, int level, FILE* out) {
+    if (ast == NULL) {
+        return;
+    }
+    else {
+        for(int i=0; i<level; i++)
+            fprintf(out, "  ");
+        switch (ast->type)
+        {
+        case AST_SYMBOL:
+            if (ast->son[0] != NULL && ast->son[0]->type == AST_PARAM_LIST) {
+                fprintf(out, "%s", ast->symbol->text);
+                fprintf(out, "(");
+                decompile(ast->son[0], 0, out);
+                fprintf(out, ")");
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_ADD) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " + ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_SUB) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " - ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_MUL) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " * ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_DIV) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " / ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_LT) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " < ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_GT) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " > ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_LE) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " <= ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_GE) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " >= ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_EQ) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " == ");
+                decompile(ast->son[1], 0, out);
+            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_DIF) {
+                decompile(ast->son[0], 0, out);
+                fprintf(out, " != ");
+                decompile(ast->son[1], 0, out);
+            }
+
+            else if (ast->son[0] != NULL) {
+                fprintf(out, "%s", ast->symbol->text);
+                fprintf(out, "[");
+                decompile(ast->son[0], level, out);
+                fprintf(out, "]");
+            } else
+            fprintf(out, "%s", ast->symbol->text);
+            break;
+
+        case AST_DECL:
+            if (ast->son[0] != NULL) {
+                decompile(ast->son[0], level, out);
+                decompile(ast->son[1], level, out);
+            }
+            break;
+        case AST_GLOBAL_VARIABLE:
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+
+            if (ast->son[3] != NULL && ast->son[3]->type == AST_LIT_LIST) {
+                fprintf(out, "[");
+                decompile(ast->son[2], level, out);
+                fprintf(out, "]");
+                fprintf(out, ":");
+                decompile(ast->son[3], level, out);
+            } else if (ast->son[2]->type == AST_SYMBOL) {
+                fprintf(out, "[");
+                decompile(ast->son[2], level, out);
+                fprintf(out, "]");
+            } else if  (ast->son[2] != NULL) { 
+                fprintf(out, ": ");
+                decompile(ast->son[2], level, out);
+            }
+            fprintf(out, ";\n");
+            break;
+        case AST_LIT_LIST:
+            fprintf(out, " ");
+            fprintf(out, "%s", ast->symbol->text);
+            decompile(ast->son[0], level, out);
+            break;
+        case AST_INT:
+            fprintf(out, "int ");
+            break; 
+        case AST_CHAR:
+            fprintf(out, "char ");
+            break; 
+        case AST_FLOAT:
+            fprintf(out, "float ");
+            break;
+        case AST_DIV:
+            decompile(ast->son[0], level, out);
+            fprintf(out, "/");
+            decompile(ast->son[1], level, out); 
+            break;
+        case AST_FUNCTION:
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+            fprintf(out, "(");
+            decompile(ast->son[2], level, out);
+            fprintf(out, ")");
+            fprintf(out, "\n");
+            if (ast->son[3]->type == AST_LCMD) {
+                fprintf(out, "{\n");
+                decompile(ast->son[3], level, out);
+                fprintf(out, "}");
+            } else
+                decompile(ast->son[3], level, out);
+            break;
+        
+        case AST_FUNCTION_ARGUMENTS:
+            if (ast->son[0] != NULL)
+                decompile(ast->son[0], level, out);
+                fprintf(out, ",");
+                if (ast->son[1] != NULL)
+                    fprintf(out, " ");
+                    decompile(ast->son[1], level, out);
+            break;
+
+        case AST_FUNCTION_ARGUMENT:
+            decompile(ast->son[0], level, out);
+            fprintf(out, " ");
+            decompile(ast->son[1], level, out);
+            break;
+
+        case AST_ASSIGMENT:
+            fprintf(out, "%s", ast->symbol->text);
+            fprintf(out, " = ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, ";\n");
+            break;
+        
+        case AST_PRINT_FUN:
+            fprintf(out, "print ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, ";\n");
+            break;
+        
+        case AST_PRINT_ARGS:
+            
+            if (ast->son[0] != NULL) {
+                fprintf(out, "\"");
+                decompile(ast->son[0], 0, out);
+                fprintf(out, "\"");
+                if (ast->son[1] != NULL) {
+                    fprintf(out, ", ");
+                    decompile(ast->son[1], 0, out);
+                }
+            }
+            break;
+        case AST_RETURN:
+            fprintf(out, "return ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, ";\n");
+            break;
+
+        case AST_LCMD:
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+            break;
+        default:
+            //fprintf(out, "\n");    
+            break;
+        }
+    }
+    return;
 }

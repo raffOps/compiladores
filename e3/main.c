@@ -31,6 +31,6 @@ int main (int argc, char **argv)
   int token;
   yyparse();  
   //hashPrint();
-  fprintf(stderr, "Compilation successful!\n");
+  fprintf(stderr, "\nCompilation successful!\n");
   exit(0);
 }

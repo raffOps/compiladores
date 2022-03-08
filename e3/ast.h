@@ -33,6 +33,9 @@
 #define AST_LIT_LIST 29
 #define AST_GLOBAL_VARIABLE 30
 #define AST_DECL 31
+#define AST_INT 32
+#define AST_CHAR 33
+#define AST_FLOAT 34
 
 typedef struct astnode {
     int type;
@@ -42,6 +45,7 @@ typedef struct astnode {
 
 AST *astCreate(int type, HASH_NODE *symbol, AST* s0, AST* s1, AST* s2, AST* s3);
 void astPrint(AST *node, int level);
+void decompile(AST *ast, int level, FILE *out);
 
 
 #endif

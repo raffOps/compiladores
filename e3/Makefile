@@ -29,4 +29,4 @@ zip: etapa3
 	@tar cvzf etapa3.tgz .
 
 clean:
-	@rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *.output
+	@rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output*
