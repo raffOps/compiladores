@@ -36,6 +36,8 @@
 #define AST_INT 32
 #define AST_CHAR 33
 #define AST_FLOAT 34
+#define AST_READ 35
+#define AST_BLOCK_COMMAND 36
 
 typedef struct astnode {
     int type;

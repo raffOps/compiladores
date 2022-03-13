@@ -11,15 +11,16 @@ extern int yylex_destroy(void);
 
 extern FILE *yyin;
 extern char *yytext;
+extern FILE *output;
 extern int getLineNumber (void);
 extern int isRunning (void);
-extern void yyparse (void);
+extern void yyparse ();
 
 int main (int argc, char **argv)
 {
   hashInit();
-  if (argc < 2) {
-    fprintf(stderr, "call: etapa2 filename\n");
+  if (argc < 3) {
+    fprintf(stderr, "call: etapa2 filename_in filename_out\n");
     exit(1);
   }
 
@@ -28,9 +29,16 @@ int main (int argc, char **argv)
     fprintf(stderr, "Cannot open file %s\n", argv[1]);
     exit(2);
   }
+
+  output = fopen(argv[2], "w+");
+  if (output == 0) {
+    fprintf(stderr, "Cannot open file %s\n", argv[2]);
+    exit(2);
+  }
   int token;
   yyparse();  
   //hashPrint();
   fprintf(stderr, "\nCompilation successful!\n");
+  //fclose(output);
   exit(0);
 }

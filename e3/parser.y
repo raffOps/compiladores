@@ -5,6 +5,7 @@
     int yyerror();
     int getLineNumber();
     int yylex();
+    FILE *output = NULL;
 %}
 
 %union
@@ -66,7 +67,7 @@
 
 %%
 
-program: decl {FILE *out; out = fopen("output.txt", "w+");   decompile($1, 0, out); fclose(out);}
+program: decl {decompile($1, 0, output);}
     ;
 
 decl: dec decl { $$ = astCreate(AST_DECL, 0, $1, $2, 0, 0);}
@@ -122,8 +123,8 @@ function: type identifier '(' function_arguments ')' simple_command { $$ = astCr
 
 // Bloco de Comandos 
 
-block_command: '{' command_list '}' {$$ = $2; }
-    | '{' '}' {$$ = 0;}
+block_command: '{' command_list '}'    { $$ = astCreate(AST_BLOCK_COMMAND, 0, $2, 0, 0, 0); }    
+    | '{' '}' { $$ = astCreate(AST_BLOCK_COMMAND, 0, 0, 0, 0, 0); }
     ;
 
 label: TK_IDENTIFIER ':' { $$ = astCreate(AST_LABEL, $1, 0, 0, 0, 0); }
@@ -174,7 +175,7 @@ expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 
     | expression OPERATOR_EQ expression {$$ = astCreate(AST_EQ, 0, $1, $3, 0, 0); }
     | expression OPERATOR_DIF expression {$$ = astCreate(AST_DIF, 0, $1, $3, 0, 0); }
     | '(' expression ')' { $$ = $2;}
-    | KW_READ { $$ = 0;}
+    | KW_READ {$$ = astCreate(AST_READ, 0, 0, 0, 0, 0); }
     ;
 
 // Comandos de Controle de de Fluxo 
@@ -182,7 +183,7 @@ expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 
 control_flow: KW_IF expression KW_THEN simple_command { $$ = astCreate(AST_IF, 0, $2, $4, 0, 0); }
     | KW_IF expression KW_THEN simple_command KW_ELSE simple_command { $$ = astCreate(AST_IF_ELSE, 0, $2, $4, $6, 0); }
     | KW_WHILE expression simple_command { $$ = astCreate(AST_WHILE, 0, $2, $3, 0, 0); }
-    | KW_GOTO TK_IDENTIFIER { $$ = astCreate(AST_GOTO, $2, 0, 0, 0, 0); }
+    | KW_GOTO identifier { $$ = astCreate(AST_GOTO, 0, $2, 0, 0, 0); }
     ;
 
 %%

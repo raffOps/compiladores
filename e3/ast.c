@@ -117,6 +117,12 @@ void astPrint(AST *node, int level) {
     case AST_FLOAT: fprintf(stderr, "AST_FLOAT");
         break;
 
+    case AST_READ: fprintf(stderr, "AST_READ");
+        break;
+
+    case AST_BLOCK_COMMAND: fprintf(stderr, "AST_BLOCK_COMMAND");
+        break;
+
     default: fprintf(stderr, "AST_UNKNOW");
         break;
     }
@@ -132,7 +138,7 @@ void astPrint(AST *node, int level) {
         astPrint(node->son[i], level+1);
 }
 
-void decompile(AST *ast, int level, FILE* out) {
+void decompile(AST *ast, int level, FILE *out) {
     if (ast == NULL) {
         return;
     }
@@ -147,48 +153,7 @@ void decompile(AST *ast, int level, FILE* out) {
                 fprintf(out, "(");
                 decompile(ast->son[0], 0, out);
                 fprintf(out, ")");
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_ADD) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " + ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_SUB) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " - ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_MUL) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " * ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_DIV) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " / ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_LT) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " < ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_GT) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " > ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_LE) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " <= ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_GE) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " >= ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_EQ) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " == ");
-                decompile(ast->son[1], 0, out);
-            } else if (ast->son[0] != NULL && ast->son[0]->type == AST_DIF) {
-                decompile(ast->son[0], 0, out);
-                fprintf(out, " != ");
-                decompile(ast->son[1], 0, out);
-            }
-
+            } 
             else if (ast->son[0] != NULL) {
                 fprintf(out, "%s", ast->symbol->text);
                 fprintf(out, "[");
@@ -196,6 +161,66 @@ void decompile(AST *ast, int level, FILE* out) {
                 fprintf(out, "]");
             } else
             fprintf(out, "%s", ast->symbol->text);
+            break;
+
+        case AST_ADD:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " + ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_SUB:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " - ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_MUL:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " * ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_DIV:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " / ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_GT:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " > ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_LT:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " < ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_GE:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " >= ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_LE:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " <= ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_EQ:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " == ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+        case AST_DIF:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " != ");
+            decompile(ast->son[1], 0, out);
             break;
 
         case AST_DECL:
@@ -237,11 +262,6 @@ void decompile(AST *ast, int level, FILE* out) {
             break; 
         case AST_FLOAT:
             fprintf(out, "float ");
-            break;
-        case AST_DIV:
-            decompile(ast->son[0], level, out);
-            fprintf(out, "/");
-            decompile(ast->son[1], level, out); 
             break;
         case AST_FUNCTION:
             decompile(ast->son[0], level, out);
@@ -289,9 +309,7 @@ void decompile(AST *ast, int level, FILE* out) {
         case AST_PRINT_ARGS:
             
             if (ast->son[0] != NULL) {
-                fprintf(out, "\"");
                 decompile(ast->son[0], 0, out);
-                fprintf(out, "\"");
                 if (ast->son[1] != NULL) {
                     fprintf(out, ", ");
                     decompile(ast->son[1], 0, out);
@@ -303,10 +321,57 @@ void decompile(AST *ast, int level, FILE* out) {
             decompile(ast->son[0], 0, out);
             fprintf(out, ";\n");
             break;
+        case AST_READ:
+            fprintf(out, "read");
+            break;
 
         case AST_LCMD:
             decompile(ast->son[0], level, out);
             decompile(ast->son[1], level, out);
+            break;
+
+        case AST_WHILE:
+            fprintf(out, "while ");
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+            break;
+
+        case AST_IF:
+            fprintf(out, "if ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " then \n");
+            decompile(ast->son[1], level+1, out);
+            fprintf(out, "\n");
+            break;
+        
+        case AST_IF_ELSE:
+            fprintf(out, "if ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " then \n");
+            decompile(ast->son[1], level+1, out);
+            fprintf(out, " else \n");
+            decompile(ast->son[2], level+1, out);
+            fprintf(out, "\n");
+            break;
+
+        case AST_GOTO:
+            fprintf(out, "goto ");
+            decompile(ast->son[0], 0, out);
+            fprintf(out, ";");
+            break;
+
+        case AST_LABEL:
+            fprintf(out, "%s", ast->symbol->text);
+            fprintf(out, ":\n");
+            break;
+            
+
+
+        case AST_BLOCK_COMMAND:
+            fprintf(out, "{\n");
+            if (ast->son[0] != NULL)
+                decompile(ast->son[0], level+1, out);
+            fprintf(out, "};\n");
             break;
         default:
             //fprintf(out, "\n");    

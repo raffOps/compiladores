@@ -23,7 +23,7 @@ y.tab.c: parser.y
 	@yacc -d parser.y
 
 test: etapa3
-	@./etapa3 input.txt
+	@./etapa3 input.txt output3.txt
 
 zip: etapa3
 	@tar cvzf etapa3.tgz .
