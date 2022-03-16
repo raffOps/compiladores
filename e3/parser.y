@@ -103,9 +103,9 @@ lit_list: LIT_INTEGER lit_list {$$ = astCreate(AST_LIT_LIST, $1, $2, 0, 0, 0); }
     | LIT_CHAR {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     ;
 
-global_variable: type identifier ':' literal ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, 0); }
-    | type identifier '[' lit_integer ']' ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, 0); }
-    | type identifier '[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE, 0, $1, $2, $4, $7); }
+global_variable: type identifier ':' literal ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_A, 0, $1, $2, $4, 0); }
+    | type identifier '[' lit_integer ']' ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_B, 0, $1, $2, $4, 0); }
+    | type identifier '[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_C, 0, $1, $2, $4, $7); }
     ;
 
 // Definição de funções 
@@ -127,7 +127,7 @@ block_command: '{' command_list '}'    { $$ = astCreate(AST_BLOCK_COMMAND, 0, $2
     | '{' '}' { $$ = astCreate(AST_BLOCK_COMMAND, 0, 0, 0, 0, 0); }
     ;
 
-label: TK_IDENTIFIER ':' { $$ = astCreate(AST_LABEL, $1, 0, 0, 0, 0); }
+label: identifier ':' { $$ = astCreate(AST_LABEL, 0, $1, 0, 0, 0); }
 
 command_list: simple_command ';' command_list { $$ = astCreate(AST_LCMD, 0, $1, $3, 0, 0); }
     | label command_list { $$ = astCreate(AST_LCMD, 0, $1, $2, 0, 0); }
@@ -136,8 +136,8 @@ command_list: simple_command ';' command_list { $$ = astCreate(AST_LCMD, 0, $1, 
     ;
 // // Comandos simples 
 
-assignment: TK_IDENTIFIER '=' expression { $$ = astCreate(AST_ASSIGMENT, $1, $3, 0, 0, 0); }
-    |  TK_IDENTIFIER '[' expression ']' '=' expression {$$ = astCreate(AST_ASSIGMENT, $1, $3, $6, 0, 0); }
+assignment: identifier '=' expression { $$ = astCreate(AST_ASSIGMENT_TYPE_A, 0, $1, $3, 0, 0); }
+    |  identifier '[' expression ']' '=' expression {$$ = astCreate(AST_ASSIGMENT_TYPE_B, 0, $1, $3, $6, 0); }
     ;
 print_argument: LIT_STRING {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     | expression { $$ = $1; }
@@ -150,6 +150,7 @@ simple_command:  assignment  {$$ = $1;}
     | KW_RETURN expression  { $$ = astCreate(AST_RETURN, 0, $2, 0, 0, 0 ); }
     | block_command  { $$ = $1; }
     | control_flow  { $$ = $1; }
+    | { $$ = astCreate(AST_EMPTY_COMMAND, 0, 0, 0, 0, 0 ); }
     ;
 // // Expressões Aritméticas 
 
@@ -158,9 +159,9 @@ parameter_list: expression ',' parameter_list {$$ = astCreate(AST_PARAM_LIST, 0,
     ;
 
 
-expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | TK_IDENTIFIER '(' parameter_list  ')' {$$ = astCreate(AST_SYMBOL, $1, $3,  0, 0, 0); }
-    | TK_IDENTIFIER '[' expression ']' {$$ = astCreate(AST_SYMBOL, $1, $3,  0, 0, 0); }
+expression:   identifier '('   ')' {$$ = astCreate(AST_EXPRESSION_TYPE_A, 0, $1,  0, 0, 0); }
+    | identifier '(' parameter_list  ')' {$$ = astCreate(AST_EXPRESSION_TYPE_B, 0, $1,  $3, 0, 0); }
+    | identifier '[' expression ']' {$$ = astCreate(AST_EXPRESSION_TYPE_C, 0, $1, $3, 0, 0); }
     | TK_IDENTIFIER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     | LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     | LIT_CHAR {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }

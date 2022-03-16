@@ -25,8 +25,8 @@ y.tab.c: parser.y
 test: etapa3
 	@./etapa3 input.txt output3.txt
 
-zip: etapa3
+zip:
 	@tar cvzf etapa3.tgz .
 
 clean:
-	@rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output*
+	@rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output* *vscode*

@@ -59,9 +59,6 @@ void astPrint(AST *node, int level) {
 
     case AST_LABEL: fprintf(stderr, "AST_LABEL");
         break;
-
-    case AST_ASSIGMENT: fprintf(stderr, "AST_ASSIGMENT");
-        break;
     
     case AST_PARAM_LIST: fprintf(stderr, "AST_PARAM_LIST");
         break;
@@ -105,7 +102,13 @@ void astPrint(AST *node, int level) {
     case AST_DECL: fprintf(stderr, "AST_DECL");
         break;
 
-    case AST_GLOBAL_VARIABLE: fprintf(stderr, "AST_GLOBAL_VARIABLE");
+    case AST_GLOBAL_VARIABLE_TYPE_A: fprintf(stderr, "AST_GLOBAL_VARIABLE_TYPE_A");
+        break;
+
+    case AST_GLOBAL_VARIABLE_TYPE_B: fprintf(stderr, "AST_GLOBAL_VARIABLE_TYPE_B");
+        break;
+
+    case AST_GLOBAL_VARIABLE_TYPE_C: fprintf(stderr, "AST_GLOBAL_VARIABLE_TYPE_C");
         break;
     
     case AST_INT: fprintf(stderr, "AST_INT");
@@ -121,6 +124,21 @@ void astPrint(AST *node, int level) {
         break;
 
     case AST_BLOCK_COMMAND: fprintf(stderr, "AST_BLOCK_COMMAND");
+        break;
+
+    case AST_EXPRESSION_TYPE_A: fprintf(stderr, "EXPRESSION_TYPE_A");
+        break;
+
+    case AST_EXPRESSION_TYPE_B: fprintf(stderr, "EXPRESSION_TYPE_B");
+        break;
+
+    case AST_EXPRESSION_TYPE_C: fprintf(stderr, "EXPRESSION_TYPE_C");
+        break;
+
+    case AST_ASSIGMENT_TYPE_A: fprintf(stderr, "AST_ASSIGMENT_TYPE_A");
+        break;
+
+    case AST_ASSIGMENT_TYPE_B: fprintf(stderr, "AST_ASSIGMENT_TYPE_B");
         break;
 
     default: fprintf(stderr, "AST_UNKNOW");
@@ -147,20 +165,29 @@ void decompile(AST *ast, int level, FILE *out) {
             fprintf(out, "  ");
         switch (ast->type)
         {
+
         case AST_SYMBOL:
-            if (ast->son[0] != NULL && ast->son[0]->type == AST_PARAM_LIST) {
-                fprintf(out, "%s", ast->symbol->text);
-                fprintf(out, "(");
-                decompile(ast->son[0], 0, out);
-                fprintf(out, ")");
-            } 
-            else if (ast->son[0] != NULL) {
-                fprintf(out, "%s", ast->symbol->text);
-                fprintf(out, "[");
-                decompile(ast->son[0], level, out);
-                fprintf(out, "]");
-            } else
             fprintf(out, "%s", ast->symbol->text);
+            break;
+
+        case AST_EXPRESSION_TYPE_A:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, "(");
+            fprintf(out, ")");
+            break;
+
+        case AST_EXPRESSION_TYPE_B:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, "(");
+            decompile(ast->son[1], 0, out);
+            fprintf(out, ")");
+            break;
+        
+        case AST_EXPRESSION_TYPE_C:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " [");
+            decompile(ast->son[1], 0, out);
+            fprintf(out, "]");
             break;
 
         case AST_ADD:
@@ -229,29 +256,36 @@ void decompile(AST *ast, int level, FILE *out) {
                 decompile(ast->son[1], level, out);
             }
             break;
-        case AST_GLOBAL_VARIABLE:
+
+        case AST_GLOBAL_VARIABLE_TYPE_A:
             decompile(ast->son[0], level, out);
             decompile(ast->son[1], level, out);
-
-            if (ast->son[3] != NULL && ast->son[3]->type == AST_LIT_LIST) {
-                fprintf(out, "[");
-                decompile(ast->son[2], level, out);
-                fprintf(out, "]");
-                fprintf(out, ":");
-                decompile(ast->son[3], level, out);
-            } else if (ast->son[2]->type == AST_SYMBOL) {
-                fprintf(out, "[");
-                decompile(ast->son[2], level, out);
-                fprintf(out, "]");
-            } else if  (ast->son[2] != NULL) { 
-                fprintf(out, ": ");
-                decompile(ast->son[2], level, out);
-            }
+            fprintf(out, ": ");
+            decompile(ast->son[2], level, out);
             fprintf(out, ";\n");
             break;
+        case AST_GLOBAL_VARIABLE_TYPE_B:
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+            fprintf(out, "[");
+            decompile(ast->son[2], level, out);
+            fprintf(out, "]");
+            fprintf(out, ";\n");
+            break;
+
+        case AST_GLOBAL_VARIABLE_TYPE_C:
+            decompile(ast->son[0], level, out);
+            decompile(ast->son[1], level, out);
+            fprintf(out, "[");
+            decompile(ast->son[2], level, out);
+            fprintf(out, "]: ");
+            decompile(ast->son[3], level, out);
+            fprintf(out, ";\n");
+            break;
+
         case AST_LIT_LIST:
-            fprintf(out, " ");
-            fprintf(out, "%s", ast->symbol->text);
+            fprintf(out, "");
+            fprintf(out, "%s ", ast->symbol->text);
             decompile(ast->son[0], level, out);
             break;
         case AST_INT:
@@ -293,10 +327,20 @@ void decompile(AST *ast, int level, FILE *out) {
             decompile(ast->son[1], level, out);
             break;
 
-        case AST_ASSIGMENT:
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, " = ");
+        case AST_ASSIGMENT_TYPE_A:
             decompile(ast->son[0], 0, out);
+            fprintf(out, " = ");
+            decompile(ast->son[1], 0, out);
+            fprintf(out, ";\n");
+            break;
+        
+        case AST_ASSIGMENT_TYPE_B:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, "[");
+            decompile(ast->son[1], 0, out);
+            fprintf(out, "]");
+            fprintf(out, " = ");
+            decompile(ast->son[2], 0, out);
             fprintf(out, ";\n");
             break;
         
@@ -332,7 +376,7 @@ void decompile(AST *ast, int level, FILE *out) {
 
         case AST_WHILE:
             fprintf(out, "while ");
-            decompile(ast->son[0], level, out);
+            decompile(ast->son[0], 0, out);
             decompile(ast->son[1], level, out);
             break;
 
@@ -361,7 +405,8 @@ void decompile(AST *ast, int level, FILE *out) {
             break;
 
         case AST_LABEL:
-            fprintf(out, "%s", ast->symbol->text);
+            //fprintf(out, "%s", ast->symbol->text);
+            decompile(ast->son[0], 0, out);
             fprintf(out, ":\n");
             break;
             
@@ -371,10 +416,11 @@ void decompile(AST *ast, int level, FILE *out) {
             fprintf(out, "{\n");
             if (ast->son[0] != NULL)
                 decompile(ast->son[0], level+1, out);
-            fprintf(out, "};\n");
+            for(int i=0; i<level+1; i++)
+                fprintf(out, "  ");
+            fprintf(out, "}\n");
             break;
         default:
-            //fprintf(out, "\n");    
             break;
         }
     }
