@@ -177,22 +177,22 @@ void decompile(AST *ast, int level, FILE *out) {
             break;
 
         case AST_EXPRESSION_TYPE_A:
-            decompile(ast->son[0], 0, out);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, "(");
             fprintf(out, ")");
             break;
 
         case AST_EXPRESSION_TYPE_B:
-            decompile(ast->son[0], 0, out);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, "(");
-            decompile(ast->son[1], 0, out);
+            decompile(ast->son[0], 0, out);
             fprintf(out, ")");
             break;
         
         case AST_EXPRESSION_TYPE_C:
+            fprintf(out, "%s", ast->symbol->text);
+            fprintf(out, "[");
             decompile(ast->son[0], 0, out);
-            fprintf(out, " [");
-            decompile(ast->son[1], 0, out);
             fprintf(out, "]");
             break;
 
@@ -265,27 +265,27 @@ void decompile(AST *ast, int level, FILE *out) {
 
         case AST_GLOBAL_VARIABLE_TYPE_A:
             decompile(ast->son[0], level, out);
-            decompile(ast->son[1], level, out);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, ": ");
-            decompile(ast->son[2], level, out);
+            decompile(ast->son[1], level, out);
             fprintf(out, ";\n");
             break;
         case AST_GLOBAL_VARIABLE_TYPE_B:
             decompile(ast->son[0], level, out);
-            decompile(ast->son[1], level, out);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, "[");
-            decompile(ast->son[2], level, out);
+            decompile(ast->son[1], level, out);
             fprintf(out, "]");
             fprintf(out, ";\n");
             break;
 
         case AST_GLOBAL_VARIABLE_TYPE_C:
             decompile(ast->son[0], level, out);
-            decompile(ast->son[1], level, out);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, "[");
-            decompile(ast->son[2], level, out);
+            decompile(ast->son[1], level, out);
             fprintf(out, "]: ");
-            decompile(ast->son[3], level, out);
+            decompile(ast->son[2], level, out);
             fprintf(out, ";\n");
             break;
 
@@ -305,15 +305,13 @@ void decompile(AST *ast, int level, FILE *out) {
             break;
         case AST_FUNCTION:
             decompile(ast->son[0], level, out);
-            decompile(ast->son[1], level, out);
+            fprintf(out, "%s ", ast->symbol->text);
             fprintf(out, "(");
-            decompile(ast->son[2], level, out);
+            decompile(ast->son[1], level, out);
             fprintf(out, ")");
             fprintf(out, "\n");
-            if (ast->son[3]->type == AST_LCMD) {
-                fprintf(out, "{\n");
-                decompile(ast->son[3], level, out);
-                fprintf(out, "}");
+            if (ast->son[2]->type == AST_BLOCK_COMMAND) {
+                decompile(ast->son[2], level, out);
             } else
                 decompile(ast->son[3], level, out);
             break;
@@ -330,7 +328,7 @@ void decompile(AST *ast, int level, FILE *out) {
         case AST_FUNCTION_ARGUMENT:
             decompile(ast->son[0], level, out);
             fprintf(out, " ");
-            decompile(ast->son[1], level, out);
+            fprintf(out, "%s", ast->symbol->text);
             break;
 
         case AST_ASSIGMENT_TYPE_A:
@@ -415,21 +413,6 @@ void decompile(AST *ast, int level, FILE *out) {
             decompile(ast->son[0], 0, out);
             fprintf(out, ":\n");
             break;
-
-
-
-        case AST_VAR_DEC:
-            decompile(ast->son[0], 0, out);
-            break;
-
-
-        case AST_FUNCTION_DEC:
-            decompile(ast->son[0], 0, out);
-            break;
-
-        
-            
-
 
         case AST_BLOCK_COMMAND:
             fprintf(out, "{\n");

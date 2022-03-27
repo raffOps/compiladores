@@ -50,7 +50,7 @@ void hashPrint(void) {
             switch (node->type)
             {
             case SYMBOL_VARIABLE:
-                printf("Table[%d] has %s with type %s\n", i, node->text, "Variable");
+                printf("Table[%d] has %s with type %s, datatype %d\n", i, node->text, "Variable", node->datatype);
                 break;
 
             case SYMBOL_FUNCTION:
@@ -64,26 +64,26 @@ void hashPrint(void) {
 
             
             default:
-                printf("Table[%d] has %s with type %s\n", i, node->text, "not defined");
+                printf("Table[%d] has %s with type %d\n", i, node->text, node->type);
                 break;
             }
         }
     }
 }
 
-// int hashCheckUndeclared(void) {
+int hashCheckUndeclared(void) {
 
-//     int i;
-//     int undeclared = 0;
-//     HASH_NODE *node;
-//     char *symbol_name;
-//     for (i=0;i<HASH_SIZE; ++i) {
-//         for (node=Table[i]; node; node = node->next) {
-//             if (node->type == SYMBOL_IDENTIFIER) {
-//                 fprintf(stdout, "Semantic ERROR: %s undeclared\n", node->text);
-//                 ++undeclared;
-//             }
-//         }
-//     }
-//     return undeclared;
-// }
+    int i;
+    int undeclared = 0;
+    HASH_NODE *node;
+    char *symbol_name;
+    for (i=0;i<HASH_SIZE; ++i) {
+        for (node=Table[i]; node; node = node->next) {
+            if (node->type == SYMBOL_IDENTIFIER) {
+                fprintf(stdout, "Semantic ERROR: %s undeclared\n", node->text);
+                ++undeclared;
+            }
+        }
+    }
+    return undeclared;
+}

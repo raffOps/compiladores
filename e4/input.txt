@@ -3,6 +3,7 @@
 char c: 'x';
 char d: 100;
 int a: 'A';
+int b: 1;
 int i: 1;
 int v[10]: 'a' 0 0 0 0 0 0 0 0 0;
 int matrix[100]; 
@@ -13,7 +14,7 @@ This is a comment
 of multiple lines
 *\
 
-int main ()
+int main (int k, char n)
   {
   a = 0;
   a = a - 1;

@@ -9,7 +9,6 @@ void check_and_set_identifier(AST *node, int symbol) {
             ++SemanticErros;
         }
         else {
-            //fprintf(stdout, " dfsfasdfasdfasdffffff   %d     ds", symbol);
             node->symbol->type = symbol;
             if (node->son[0]) {
                 switch (node->son[0]->type) {
@@ -24,12 +23,12 @@ void check_and_set_identifier(AST *node, int symbol) {
                     node->symbol->datatype = DATATYPE_FLOAT;
                     break;
                 default:
-                fprintf(stderr, "dpçoifsjf");
                     break;
                 }
+            }
         }
     }
-}}
+}
 
 void check_and_set_declarations(AST *node) {
     int i = 0;
@@ -37,8 +36,12 @@ void check_and_set_declarations(AST *node) {
         return;
 
     switch (node->type) {
-        case AST_VAR_DEC: check_and_set_identifier(node, SYMBOL_VARIABLE); break;
-        case AST_FUNCTION_DEC: check_and_set_identifier(node, SYMBOL_FUNCTION); break;
+        case AST_GLOBAL_VARIABLE_TYPE_A: 
+        case AST_GLOBAL_VARIABLE_TYPE_B:
+        case AST_GLOBAL_VARIABLE_TYPE_C:
+            check_and_set_identifier(node, SYMBOL_VARIABLE); 
+            break;
+        case AST_FUNCTION: check_and_set_identifier(node, SYMBOL_FUNCTION); break;
         case AST_FUNCTION_ARGUMENT: check_and_set_identifier(node, SYMBOL_VARIABLE); break;
         default:
             break;
@@ -49,6 +52,6 @@ void check_and_set_declarations(AST *node) {
         check_and_set_declarations(node->son[i]);
 }
 
-// void check_undeclared() {
-//     SemanticErros += hashCheckUndeclared();
-// }
+void check_undeclared() {
+    SemanticErros += hashCheckUndeclared();
+}
