@@ -72,9 +72,9 @@ int is_number(AST *son) {
 
 void check_operands(AST *node) {
     int i;
+    fprintf(stdout, "aqui");
     if (node == 0)
         return;
-
     switch (node->type)
     {
     case AST_ADD:
@@ -87,7 +87,6 @@ void check_operands(AST *node) {
     case AST_GE:
     case AST_EQ:
     case AST_DIF:
-        fprintf(stdout, "aqui\n");
         if (!is_number(node->son[0])) {
                 fprintf(stderr, "Semantic ERROR: Invalid left operands %s for arithimetic operation\n", node->symbol->text);
                 ++SemanticErros;
@@ -108,6 +107,7 @@ void check_operands(AST *node) {
 }
 
 void check_undeclared() {
+    fprintf(stdout, "aqui");
     SemanticErros += hashCheckUndeclared();
 }
 

@@ -71,7 +71,7 @@
 program: decl {
             check_and_set_declarations($1); 
             check_undeclared(); 
-            //decompile($1, 0, output);
+            decompile($1, 0, output);
             //check_operands($1);
             astPrint($1, 0);
             }
@@ -166,9 +166,9 @@ parameter_list: expression ',' parameter_list {$$ = astCreate(AST_PARAM_LIST, 0,
     ;
 
 
-expression:   identifier '('   ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_A, 0, $1,  0, 0, 0); }
-    | identifier '(' parameter_list  ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_B, 0, $1,  $3, 0, 0); }
-    | identifier '[' expression ']' {$$ = astCreate(AST_EXPRESSION_TYPE_C, 0, $1, $3, 0, 0); }
+expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_A, $1, 0,  0, 0, 0); }
+    | TK_IDENTIFIER '(' parameter_list  ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_B, $1, $3, 0, 0, 0); }
+    | TK_IDENTIFIER '[' expression ']' {$$ = astCreate(AST_EXPRESSION_TYPE_C, $1, $3, 0, 0, 0); }
     | TK_IDENTIFIER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     | LIT_INTEGER {$$ = astCreate(AST_INT, $1, 0,  0, 0, 0); }
     | LIT_CHAR {$$ = astCreate(AST_CHAR, $1, 0,  0, 0, 0); }
