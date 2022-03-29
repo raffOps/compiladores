@@ -36,8 +36,8 @@
 #define AST_FLOAT 34
 #define AST_READ 35
 #define AST_BLOCK_COMMAND 36
-#define AST_EXPRESSION_TYPE_A 37
-#define AST_EXPRESSION_TYPE_B 38
+#define AST_FUNCTION_CALL_TYPE_A 37
+#define AST_FUNCTION_CALL_TYPE_B 38
 #define AST_EXPRESSION_TYPE_C 39
 #define AST_GLOBAL_VARIABLE_TYPE_A 40
 #define AST_GLOBAL_VARIABLE_TYPE_B 41
@@ -48,6 +48,10 @@
 
 #define AST_VAR_DEC 46
 #define AST_FUNCTION_DEC 47
+#define AST_STR 48
+#define AST_KW_INT 49
+#define AST_KW_FLOAT 50
+#define AST_KW_CHAR 51
 
 
 typedef struct astnode {

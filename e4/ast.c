@@ -126,10 +126,10 @@ void astPrint(AST *node, int level) {
     case AST_BLOCK_COMMAND: fprintf(stderr, "AST_BLOCK_COMMAND");
         break;
 
-    case AST_EXPRESSION_TYPE_A: fprintf(stderr, "EXPRESSION_TYPE_A");
+    case AST_FUNCTION_CALL_TYPE_A: fprintf(stderr, "AST_FUNCTION_CALL_TYPE_A");
         break;
 
-    case AST_EXPRESSION_TYPE_B: fprintf(stderr, "EXPRESSION_TYPE_B");
+    case AST_FUNCTION_CALL_TYPE_B: fprintf(stderr, "AST_FUNCTION_CALL_TYPE_B");
         break;
 
     case AST_EXPRESSION_TYPE_C: fprintf(stderr, "EXPRESSION_TYPE_C");
@@ -147,12 +147,25 @@ void astPrint(AST *node, int level) {
     case AST_FUNCTION_DEC: fprintf(stderr, "AST_FUNCTION_DEC");
         break;
 
+    case AST_STR: fprintf(stderr, "AST_STR");
+        break;
+
+    case AST_KW_INT: fprintf(stderr, "AST_KW_INT");
+        break;
+
+
+    case AST_KW_CHAR: fprintf(stderr, "AST_KW_CHAR");
+        break;
+
+    case AST_KW_FLOAT: fprintf(stderr, "AST_KW_FLOAT");
+        break;
+
     default: fprintf(stderr, "AST_UNKNOW");
         break;
     }
 
     if (node->symbol != 0) {
-        fprintf(stderr, ", %s)\n", node->symbol->text);
+        fprintf(stderr, ", %s, %d)\n", node->symbol->text, node->symbol->type);
     }
     else {
         fprintf(stderr, ", 0)\n");
@@ -171,28 +184,37 @@ void decompile(AST *ast, int level, FILE *out) {
             fprintf(out, "  ");
         switch (ast->type)
         {
-
         case AST_SYMBOL:
+        case AST_STR:
+        case AST_INT:
+        case AST_CHAR:
             fprintf(out, "%s", ast->symbol->text);
             break;
 
-        case AST_EXPRESSION_TYPE_A:
-            fprintf(out, "%s", ast->symbol->text);
+        case AST_FLOAT:
+            decompile(ast->son[0], 0, out);
+            fprintf(out, " / ");
+            decompile(ast->son[1], 0, out);
+            break;
+
+
+        case AST_FUNCTION_CALL_TYPE_A:
+            decompile(ast->son[0], 0, out);
             fprintf(out, "(");
             fprintf(out, ")");
             break;
 
-        case AST_EXPRESSION_TYPE_B:
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, "(");
+        case AST_FUNCTION_CALL_TYPE_B:
             decompile(ast->son[0], 0, out);
+            fprintf(out, "(");
+            decompile(ast->son[1], 0, out);
             fprintf(out, ")");
             break;
         
         case AST_EXPRESSION_TYPE_C:
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, "[");
             decompile(ast->son[0], 0, out);
+            fprintf(out, "[");
+            decompile(ast->son[1], 0, out);
             fprintf(out, "]");
             break;
 
@@ -211,12 +233,6 @@ void decompile(AST *ast, int level, FILE *out) {
         case AST_MUL:
             decompile(ast->son[0], 0, out);
             fprintf(out, " * ");
-            decompile(ast->son[1], 0, out);
-            break;
-
-        case AST_DIV:
-            decompile(ast->son[0], 0, out);
-            fprintf(out, " / ");
             decompile(ast->son[1], 0, out);
             break;
 
@@ -265,27 +281,27 @@ void decompile(AST *ast, int level, FILE *out) {
 
         case AST_GLOBAL_VARIABLE_TYPE_A:
             decompile(ast->son[0], level, out);
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, ": ");
             decompile(ast->son[1], level, out);
+            fprintf(out, ": ");
+            decompile(ast->son[2], level, out);
             fprintf(out, ";\n");
             break;
         case AST_GLOBAL_VARIABLE_TYPE_B:
             decompile(ast->son[0], level, out);
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, "[");
             decompile(ast->son[1], level, out);
+            fprintf(out, "[");
+            decompile(ast->son[2], level, out);
             fprintf(out, "]");
             fprintf(out, ";\n");
             break;
 
         case AST_GLOBAL_VARIABLE_TYPE_C:
             decompile(ast->son[0], level, out);
-            fprintf(out, "%s", ast->symbol->text);
-            fprintf(out, "[");
             decompile(ast->son[1], level, out);
-            fprintf(out, "]: ");
+            fprintf(out, "[");
             decompile(ast->son[2], level, out);
+            fprintf(out, "]: ");
+            decompile(ast->son[3], level, out);
             fprintf(out, ";\n");
             break;
 
@@ -294,26 +310,23 @@ void decompile(AST *ast, int level, FILE *out) {
             fprintf(out, "%s ", ast->symbol->text);
             decompile(ast->son[0], level, out);
             break;
-        case AST_INT:
+        case AST_KW_INT:
             fprintf(out, "int ");
             break; 
-        case AST_CHAR:
+        case AST_KW_CHAR:
             fprintf(out, "char ");
             break; 
-        case AST_FLOAT:
+        case AST_KW_FLOAT:
             fprintf(out, "float ");
             break;
         case AST_FUNCTION:
             decompile(ast->son[0], level, out);
-            fprintf(out, "%s ", ast->symbol->text);
+            fprintf(out, "%s", ast->symbol->text);
             fprintf(out, "(");
             decompile(ast->son[1], level, out);
             fprintf(out, ")");
             fprintf(out, "\n");
-            if (ast->son[2]->type == AST_BLOCK_COMMAND) {
-                decompile(ast->son[2], level, out);
-            } else
-                decompile(ast->son[3], level, out);
+            decompile(ast->son[2], level, out);
             break;
         
         case AST_FUNCTION_ARGUMENTS:
@@ -330,6 +343,13 @@ void decompile(AST *ast, int level, FILE *out) {
             fprintf(out, " ");
             fprintf(out, "%s", ast->symbol->text);
             break;
+        
+        case AST_PARAM_LIST:
+            decompile(ast->son[0], level, out);
+            fprintf(out, ",");
+            decompile(ast->son[1], level, out);
+            break;
+
 
         case AST_ASSIGMENT_TYPE_A:
             decompile(ast->son[0], 0, out);

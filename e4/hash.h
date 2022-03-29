@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #define HASH_SIZE 997
-
 #define SYMBOL_IDENTIFIER 1
 #define SYMBOL_LIT_INT 2
 #define SYMBOL_LIT_STRING 3

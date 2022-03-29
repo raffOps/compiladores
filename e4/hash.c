@@ -64,7 +64,7 @@ void hashPrint(void) {
 
             
             default:
-                printf("Table[%d] has %s with type %d\n", i, node->text, node->type);
+                printf("Table[%d] has %s with type %s\n", i, node->text, "undefined");
                 break;
             }
         }

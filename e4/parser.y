@@ -68,7 +68,13 @@
 
 %%
 
-program: decl {check_and_set_declarations($1); astPrint($1, 0); decompile($1, 0, output);}
+program: decl {
+            check_and_set_declarations($1); 
+            check_undeclared(); 
+            //decompile($1, 0, output);
+            //check_operands($1);
+            astPrint($1, 0);
+            }
     ;
 
 decl: dec decl { $$ = astCreate(AST_DECL, 0, $1, $2, 0, 0);}
@@ -81,37 +87,37 @@ dec: global_variable {$$ = $1;}
     
 // Declarações de variáveis globais 
 
-type: KW_CHAR { $$ = astCreate(AST_CHAR, 0, 0, 0, 0, 0); }
-    | KW_INT { $$ = astCreate(AST_INT, 0, 0, 0, 0, 0); }
-    | KW_FLOAT { $$ = astCreate(AST_FLOAT, 0, 0, 0, 0, 0); }
+type: KW_CHAR { $$ = astCreate(AST_KW_CHAR, 0, 0, 0, 0, 0); }
+    | KW_INT { $$ = astCreate(AST_KW_INT, 0, 0, 0, 0, 0); }
+    | KW_FLOAT { $$ = astCreate(AST_KW_FLOAT, 0, 0, 0, 0, 0); }
     ;
 
-lit_integer: LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+lit_integer: LIT_INTEGER {$$ = astCreate(AST_INT, $1, 0,  0, 0, 0); }
     ;
 
 identifier: TK_IDENTIFIER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
     ;
 
 
-literal: LIT_CHAR {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | lit_integer '/' lit_integer {$$ = astCreate(AST_DIV, 0, $1, $3, 0, 0); }
+literal: LIT_CHAR {$$ = astCreate(AST_CHAR, $1, 0,  0, 0, 0); }
+    | LIT_INTEGER {$$ = astCreate(AST_INT, $1, 0,  0, 0, 0); }
+    | lit_integer '/' lit_integer {$$ = astCreate(AST_FLOAT, 0, $1, $3, 0, 0); }
     ;
 
 lit_list: LIT_INTEGER lit_list {$$ = astCreate(AST_LIT_LIST, $1, $2, 0, 0, 0); }
     | LIT_CHAR lit_list {$$ = astCreate(AST_LIT_LIST, $1, $2, 0, 0, 0); }
-    | LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | LIT_CHAR {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+    | LIT_INTEGER {$$ = astCreate(AST_INT, $1, 0,  0, 0, 0); }
+    | LIT_CHAR {$$ = astCreate(AST_CHAR, $1, 0,  0, 0, 0); }
     ;
 
 global_variable: type TK_IDENTIFIER ':' literal ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_A, $2, $1, $4, 0, 0); }
     | type TK_IDENTIFIER '[' lit_integer ']' ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_B, $2, $1, $4, 0, 0); }
-    | type TK_IDENTIFIER'[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_C, $2, $1, $4, $7, 0); }
+    | type TK_IDENTIFIER '[' lit_integer ']' ':' lit_list ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_C, $2, $1, $4, $7, 0); }
     ;
 
 // Definição de funções 
 
-function_argument: type TK_IDENTIFIER { $$ = astCreate(AST_FUNCTION_ARGUMENT, $2, $1, 0, 0, 0); }
+function_argument: type identifier { $$ = astCreate(AST_FUNCTION_ARGUMENT, 0, $1, $2, 0, 0); }
 
 
 function_arguments: function_argument ',' function_arguments  { $$ = astCreate(AST_FUNCTION_ARGUMENTS, 0, $1, $3, 0, 0); }
@@ -140,7 +146,7 @@ command_list: simple_command ';' command_list { $$ = astCreate(AST_LCMD, 0, $1, 
 assignment: identifier '=' expression { $$ = astCreate(AST_ASSIGMENT_TYPE_A, 0, $1, $3, 0, 0); }
     |  identifier '[' expression ']' '=' expression {$$ = astCreate(AST_ASSIGMENT_TYPE_B, 0, $1, $3, $6, 0); }
     ;
-print_argument: LIT_STRING {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+print_argument: LIT_STRING {$$ = astCreate(AST_STR, $1, 0,  0, 0, 0); }
     | expression { $$ = $1; }
     ;
 print_arguments: print_argument ',' print_arguments {$$ = astCreate(AST_PRINT_ARGS, 0, $1, $3, 0, 0); }
@@ -160,12 +166,12 @@ parameter_list: expression ',' parameter_list {$$ = astCreate(AST_PARAM_LIST, 0,
     ;
 
 
-expression:   TK_IDENTIFIER '('   ')' {$$ = astCreate(AST_EXPRESSION_TYPE_A, $1, 0,  0, 0, 0); }
-    | TK_IDENTIFIER '(' parameter_list  ')' {$$ = astCreate(AST_EXPRESSION_TYPE_B, $1, $3,  0, 0, 0); }
-    | TK_IDENTIFIER '[' expression ']' {$$ = astCreate(AST_EXPRESSION_TYPE_C, $1, $3, 0, 0, 0); }
+expression:   identifier '('   ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_A, 0, $1,  0, 0, 0); }
+    | identifier '(' parameter_list  ')' {$$ = astCreate(AST_FUNCTION_CALL_TYPE_B, 0, $1,  $3, 0, 0); }
+    | identifier '[' expression ']' {$$ = astCreate(AST_EXPRESSION_TYPE_C, 0, $1, $3, 0, 0); }
     | TK_IDENTIFIER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | LIT_INTEGER {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
-    | LIT_CHAR {$$ = astCreate(AST_SYMBOL, $1, 0,  0, 0, 0); }
+    | LIT_INTEGER {$$ = astCreate(AST_INT, $1, 0,  0, 0, 0); }
+    | LIT_CHAR {$$ = astCreate(AST_CHAR, $1, 0,  0, 0, 0); }
     | expression '+' expression {$$ = astCreate(AST_ADD, 0, $1, $3, 0, 0); }
     | expression '-' expression {$$ = astCreate(AST_SUB, 0, $1, $3, 0, 0); }
     | expression '*' expression {$$ = astCreate(AST_MUL, 0, $1, $3, 0, 0); }
