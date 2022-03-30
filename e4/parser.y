@@ -71,9 +71,10 @@
 program: decl {
             check_and_set_declarations($1); 
             check_undeclared(); 
-            decompile($1, 0, output);
-            //check_operands($1);
-            astPrint($1, 0);
+            //decompile($1, 0, output);
+            //astPrint($1, 0);
+            check_operands($1);
+            check_variables_functions_use($1);
             }
     ;
 

@@ -38,7 +38,7 @@ int yyerror();
 \'.\' {yylval.symbol = hashInsert(yytext, SYMBOL_LIT_CHAR); 
         return LIT_CHAR;}
 
-\"[^\"\n]*\"  {yylval.symbol = hashInsert(yytext, SYMBOL_LIT_STRING); return LIT_STRING;}
+\"[^\"\n]*\"  {yylval.symbol = hashInsert(yytext, SYMBOL_STRING); return LIT_STRING;}
 
 
 \, {return (int)',' ;}

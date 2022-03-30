@@ -43,10 +43,52 @@ void check_and_set_declarations(AST *node) {
         case AST_GLOBAL_VARIABLE_TYPE_A:
         case AST_GLOBAL_VARIABLE_TYPE_B:
         case AST_GLOBAL_VARIABLE_TYPE_C:
-            check_and_set_identifier(node, SYMBOL_VARIABLE); 
+            switch (node->son[0]->type)
+            {
+                case AST_KW_INT:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_INT);
+                    break;
+                case AST_KW_CHAR:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_CHAR);
+                    break;
+                case AST_KW_FLOAT:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_FLOAT);
+                    break;
+                default:
+                    break;
+            }
             break;
-        case AST_FUNCTION: check_and_set_identifier(node, SYMBOL_FUNCTION); break;
-        case AST_FUNCTION_ARGUMENT: check_and_set_identifier(node, SYMBOL_VARIABLE); break;
+        case AST_FUNCTION:
+            switch (node->son[0]->type)
+            {
+                case AST_KW_INT:
+                    check_and_set_identifier(node, SYMBOL_FUNCTION_INT);
+                    break;
+                case AST_KW_CHAR:
+                    check_and_set_identifier(node, SYMBOL_FUNCTION_CHAR);
+                    break;
+                case AST_KW_FLOAT:
+                    check_and_set_identifier(node, SYMBOL_FUNCTION_FLOAT);
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case AST_FUNCTION_ARGUMENT:
+            switch (node->son[0]->type)
+            {
+                case AST_KW_INT:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_INT);
+                    break;
+                case AST_KW_CHAR:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_CHAR);
+                    break;
+                case AST_KW_FLOAT:
+                    check_and_set_identifier(node, SYMBOL_VARIABLE_FLOAT);
+                    break;
+                default:
+                    break;
+            }
         default:
             break;
 
@@ -57,22 +99,30 @@ void check_and_set_declarations(AST *node) {
 }
 
 int is_number(AST *son) {
+    //fprintf(stdout, "%s %d\n", son->symbol->text, son->symbol->type);
     return (son->type == AST_ADD 
             || son->type == AST_SUB
             || son->type == AST_MUL
             || son->type == AST_DIV 
             || (son->type == AST_SYMBOL && 
-                    son->symbol->type == SYMBOL_LIT_INT)
+                    (son->symbol->type == SYMBOL_VARIABLE_INT
+                        || son->symbol->type == SYMBOL_VARIABLE_CHAR
+                        || son->symbol->type == SYMBOL_VARIABLE_FLOAT )
+            || (son->type == AST_INT)
+            || (son->type == AST_CHAR)
+            || (son->symbol &&  (
+                    hashFind(son->symbol->text)->type == AST_INT 
+                    || hashFind(son->symbol->text)->type == AST_CHAR)
+                    || hashFind(son->symbol->text)->type == AST_FLOAT))
             || (son->type == AST_FUNCTION_CALL_TYPE_A
                 || son->type == AST_ASSIGMENT_TYPE_B
-                && (son->symbol->datatype == DATATYPE_FLOAT
+                && (son->symbol->datatype == DATATYPE_CHAR
                     || son->symbol->datatype == DATATYPE_INT)));
 
 }
 
 void check_operands(AST *node) {
     int i;
-    fprintf(stdout, "aqui");
     if (node == 0)
         return;
     switch (node->type)
@@ -88,11 +138,11 @@ void check_operands(AST *node) {
     case AST_EQ:
     case AST_DIF:
         if (!is_number(node->son[0])) {
-                fprintf(stderr, "Semantic ERROR: Invalid left operands %s for arithimetic operation\n", node->symbol->text);
-                ++SemanticErros;
+            fprintf(stderr, "Semantic ERROR: Invalid left operands %s for logic/arithimetic operation\n", node->son[0]->symbol->text);
+            ++SemanticErros;
         }
         if (!is_number(node->son[1])) {
-            fprintf(stderr, "Semantic ERROR: Invalid right operands %s for arithimetic operation\n", node->symbol->text);
+            fprintf(stderr, "Semantic ERROR: Invalid right operands %s for logic/arithimetic operation\n", node->son[1]->symbol->text);
             ++SemanticErros;
         }
         break;
@@ -106,8 +156,42 @@ void check_operands(AST *node) {
 
 }
 
+void check_variables_functions_use(AST *node) {
+    int i;
+    if (node == 0)
+        return;
+    switch (node->type)
+    {
+    case AST_FUNCTION_CALL_TYPE_A:
+    case AST_FUNCTION_CALL_TYPE_B:
+        switch (hashFind(node->symbol->text)->type) {
+            case AST_GLOBAL_VARIABLE_TYPE_A:
+            case AST_GLOBAL_VARIABLE_TYPE_B:
+            case AST_GLOBAL_VARIABLE_TYPE_C:
+                fprintf(stderr, "Semantic ERROR: variable %s used as function", node->symbol->text);
+                ++SemanticErros;
+                break;
+        }
+        break;    
+    case AST_SYMBOL:
+        switch (hashFind(node->symbol->text)->type) {
+            case AST_FUNCTION:
+                fprintf(stderr, "Semantic ERROR: function %s used as variable", node->symbol->text);
+                ++SemanticErros;
+                break;
+        }
+        break;
+    
+    default:
+        break;
+    }    
+
+    for (int i=0; i<MAX_SONS; i++)
+        check_operands(node->son[i]);
+
+}
+
 void check_undeclared() {
-    fprintf(stdout, "aqui");
     SemanticErros += hashCheckUndeclared();
 }
 

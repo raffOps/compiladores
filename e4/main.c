@@ -41,6 +41,9 @@ int main (int argc, char **argv)
   hashPrint();
   if (SemanticErros == 0)
     fprintf(stderr, "\nCompilation successful!\n");
+  else
+    exit(4);
+
   //fclose(output);
   exit(0);
 }

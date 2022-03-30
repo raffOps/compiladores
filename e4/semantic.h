@@ -13,6 +13,7 @@ void check_and_set_declarations(AST *node);
 void check_operands(AST *node);
 void check_undeclared();
 int is_number(AST *son);
+void check_variables_functions_use(AST *node);
 //int check_value_in_array(int value, int *array);
 
 #endif

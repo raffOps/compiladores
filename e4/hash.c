@@ -31,6 +31,7 @@ HASH_NODE *hashInsert(char *text, int type) {
     HASH_NODE *newnode;
     int address = hashAddress(text);
     if ((newnode = hashFind(text)) != 0)
+    
         return newnode;
     newnode = (HASH_NODE*) calloc(1, sizeof(HASH_NODE));
     newnode->type = type;
@@ -57,12 +58,18 @@ void hashPrint(void) {
                 printf("Table[%d] has %s with type %s, datatype %d\n", i, node->text, "Function", node->datatype);
                 break;
 
-            case SYMBOL_LIT_INT:
-            case SYMBOL_LIT_CHAR:
-            case SYMBOL_LIT_STRING: printf("Table[%d] has %s with type %s, datatype %d\n", i, node->text, "Literal", node->datatype); 
+            case SYMBOL_VARIABLE_INT:
+            case SYMBOL_VARIABLE_CHAR:
+            case SYMBOL_VARIABLE_FLOAT: 
+                printf("Table[%d] has %s with type %s, datatype %d\n", i, node->text, "Variable", node->datatype); 
                 break;
 
-            
+            case SYMBOL_LIT_CHAR:
+            case SYMBOL_LIT_FLOAT:
+            case SYMBOL_LIT_INT:
+                printf("Table[%d] has %s with type %s\n", i, node->text, "Literal"); 
+                break;
+
             default:
                 printf("Table[%d] has %s with type %s\n", i, node->text, "undefined");
                 break;
