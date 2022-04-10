@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        ".sql": "jinja-sql",
+        "__locale": "c",
+        "ios": "c"
+    }
+}

@@ -1,0 +1,6 @@
+int main(int a, int b)
+  {
+      print "Incrementado algumas vezes a fica " , a ,"\n";
+
+      return dec(1, 2, 3);
+  }
