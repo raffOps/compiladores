@@ -51,8 +51,10 @@ TAC* tacCreate(int type, HASH_NODE* res, HASH_NODE* op1, HASH_NODE* op2);
 void tacPrint(TAC* tac);
 void tacPrintBackwards(TAC* tac);
 TAC* generateCode(AST* node);
+TAC* makeBinOperation(int type, TAC* code0, TAC* code1);
 TAC* makeIfThen(TAC* code0, TAC* code1);
 TAC* makeIfThenElse(TAC* code0, TAC* code1, TAC* code2);
+TAC* makeWhile(TAC* code0, TAC* code1);
 
 #endif
 

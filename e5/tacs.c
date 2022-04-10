@@ -256,25 +256,50 @@ TAC* generateCode(AST* node) {
             result = tacJoin(code[0], preResult);
             break;
 
-        case AST_INT_LIST:
+        case AST_INT_LIST: 
+            result = makeBinOperation(TAC_LIST, code[0], code[1]); 
+            break;
         case AST_CHAR_LIST:
-        case AST_PRINT_ARGS:
+            result = makeBinOperation(TAC_LIST, code[0], code[1]); 
+            break;
+        case AST_PRINT_ARGS: 
+            result = makeBinOperation(TAC_PRINT_ARGS, code[0], code[1]); 
+            break;
         case AST_FUNCTION_PARAMS:
-        case AST_ARG_LIST:
-        case AST_ADD:
-        case AST_SUB:
-        case AST_MUL:
+            result = makeBinOperation(TAC_FUNCTION_PARAMS, code[0], code[1]); 
+            break;
+        case AST_ARG_LIST: 
+            result = makeBinOperation(TAC_ARG_LIST, code[0], code[1]); 
+            break;
+        case AST_ADD: 
+            result = makeBinOperation(TAC_ADD, code[0], code[1]); 
+            break;
+        case AST_SUB: 
+            result = makeBinOperation(TAC_SUB, code[0], code[1]); 
+            break;
+        case AST_MUL: 
+            result = makeBinOperation(TAC_MUL, code[0], code[1]); 
+            break;
         case AST_DIV:
-        case AST_LE:
-        case AST_LT:
-        case AST_GE:
-        case AST_GT:
-        case AST_EQ:
+            result = makeBinOperation(TAC_DIV, code[0], code[1]);
+            break;
+        case AST_LE: 
+            result = makeBinOperation(TAC_LE, code[0], code[1]); 
+            break;
+        case AST_LT: 
+            result = makeBinOperation(TAC_LT, code[0], code[1]); 
+            break;
+        case AST_GE: 
+            result = makeBinOperation(TAC_GE, code[0], code[1]); 
+            break;
+        case AST_GT: 
+            result = makeBinOperation(TAC_GT, code[0], code[1]); 
+            break;
+        case AST_EQ: 
+            result = makeBinOperation(TAC_EQ, code[0], code[1]); 
+            break;
         case AST_DIF:
-            preResult = tacCreate(getTacType(node->type), makeTemp(), 
-                                        code[0]?code[0]->res:0, 
-                                        code[1]?code[1]->res:0);
-            result = tacJoin(code[0], tacJoin(code[1], preResult));
+            result = makeBinOperation(TAC_DIF, code[0], code[1]); 
             break;
 
 
@@ -296,7 +321,9 @@ TAC* generateCode(AST* node) {
             result = makeIfThenElse(code[0], code[1], code[2]);
             break;
 
-    
+        case AST_WHILE:
+            result = makeWhile(code[0], code[1]);
+            break;
 
         default:
             result = tacJoin(code[0], 
@@ -309,6 +336,15 @@ TAC* generateCode(AST* node) {
     }
 
     return result;
+}
+
+TAC* makeBinOperation(int type, TAC* code0, TAC* code1) {
+    TAC* preResult = 0;
+    preResult = tacCreate(type, makeTemp(), 
+                                        code0?code0->res:0, 
+                                        code1?code1->res:0);
+    return tacJoin(code0, tacJoin(code1, preResult));
+
 }
 
 TAC* makeIfThen(TAC* code0, TAC* code1) {
@@ -354,6 +390,34 @@ TAC* makeIfThenElse(TAC* code0, TAC* code1, TAC* code2) {
                                         tacJoin(code2, jumplabelTAC))))));
 }
 
+
+TAC* makeWhile(TAC* code0, TAC* code1) {
+    TAC* whileTAC = 0;
+    TAC* whilelabelTAC = 0;
+    TAC* jumptac = 0;
+    TAC* jumplabelTAC = 0;
+
+    HASH_NODE* whilelabel = 0;
+    whilelabel = makeLabel();
+
+    HASH_NODE* jumplabel = 0;
+    jumplabel = makeLabel();
+
+    whileTAC = tacCreate(TAC_JUMPZ, whilelabel, code0?code0->res:0, 0);
+    whilelabelTAC = tacCreate(TAC_LABEL, whilelabel, 0, 0);
+    
+    jumptac = tacCreate(TAC_JUMP, jumplabel, 0, 0);    
+    jumplabelTAC = tacCreate(TAC_LABEL, jumplabel, 0, 0);
+
+
+
+    return tacJoin(jumplabelTAC,
+                tacJoin(code0,
+                        tacJoin(whileTAC,
+                            tacJoin(code1,
+                                tacJoin(jumptac, whilelabelTAC)))));
+
+}
 
 
 
