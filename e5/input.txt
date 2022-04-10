@@ -1,10 +1,9 @@
-int v[10]: 1 2 3;
-int matrix[100]; 
-float f: 2/3;
-int a: 2;
 int main(int a, int b)
   {
-      print "Incrementado algumas vezes a fica " , a ,"\n";
-
-      return dec(1, 2, 3);
+  if (a) then
+    {
+        a=1;
+    }
+  else
+    a=2;
   }

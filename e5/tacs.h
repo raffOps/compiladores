@@ -28,6 +28,8 @@
 #define TAC_FUNCTION_PARAMS 21
 #define TAC_IFZ 22
 #define TAC_JUMP 23
+#define TAC_JUMPZ 24
+#define TAC_LABEL 25
 #define TAC_MOVE 30
 
 #define TAC_LIT 40
@@ -49,7 +51,8 @@ TAC* tacCreate(int type, HASH_NODE* res, HASH_NODE* op1, HASH_NODE* op2);
 void tacPrint(TAC* tac);
 void tacPrintBackwards(TAC* tac);
 TAC* generateCode(AST* node);
-
+TAC* makeIfThen(TAC* code0, TAC* code1);
+TAC* makeIfThenElse(TAC* code0, TAC* code1, TAC* code2);
 
 #endif
 

@@ -20,6 +20,7 @@
 #define SYMBOL_LIT_INT 14
 #define SYMBOL_LIT_FLOAT 15
 #define SYMBOL_LIT_CHAR 16
+#define SYMBOL_LABEL 17
 
 
 #define DATATYPE_INT 1
@@ -41,5 +42,6 @@ HASH_NODE *hashInsert(char *text, int type);
 void hashPrint();
 int hashCheckUndeclared(void);
 HASH_NODE *makeTemp(void);
+HASH_NODE *makeLabel(void);
 
 #endif

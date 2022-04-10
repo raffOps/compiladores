@@ -91,6 +91,16 @@ void tacPrint(TAC* tac) {
     case TAC_FUNCTION_PARAMS: fprintf(stderr, "TAC_FUNCTION_PARAMS");
         break; 
 
+
+    case TAC_JUMP: fprintf(stderr, "TAC_JUMP");
+        break; 
+
+    case TAC_JUMPZ: fprintf(stderr, "TAC_JUMPZ");
+        break; 
+
+    case TAC_LABEL: fprintf(stderr, "TAC_LABEL");
+        break; 
+
     default:
         fprintf(stderr, "TAC_UNKNOW");
         break;
@@ -277,6 +287,15 @@ TAC* generateCode(AST* node) {
                             );
             break;
 
+
+        case AST_IF:
+            result = makeIfThen(code[0], code[1]);
+            break;
+
+        case AST_IF_ELSE:
+            result = makeIfThenElse(code[0], code[1], code[2]);
+            break;
+
     
 
         default:
@@ -290,6 +309,49 @@ TAC* generateCode(AST* node) {
     }
 
     return result;
+}
+
+TAC* makeIfThen(TAC* code0, TAC* code1) {
+    TAC* jumpztac = 0;
+    TAC* labeltac = 0;
+
+    HASH_NODE* falseLabel = 0;
+    falseLabel = makeLabel();
+
+    jumpztac = tacCreate(TAC_JUMPZ, falseLabel, code0?code0->res:0, 0);
+    
+    labeltac = tacCreate(TAC_LABEL, falseLabel, 0, 0);
+    return tacJoin(code0,
+                    tacJoin(jumpztac, 
+                            tacJoin(code1, labeltac)));
+}
+
+TAC* makeIfThenElse(TAC* code0, TAC* code1, TAC* code2) {
+    TAC* jumpztac = 0;
+    TAC* jumpzlabelTAC = 0;
+    TAC* jumptac = 0;
+    TAC* jumplabelTAC = 0;
+
+    HASH_NODE* jumpzlabel = 0;
+    jumpzlabel = makeLabel();
+
+    HASH_NODE* jumplabel = 0;
+    jumplabel = makeLabel();
+
+
+    jumpztac = tacCreate(TAC_JUMPZ, jumpzlabel, code0?code0->res:0, 0);
+    jumpzlabelTAC = tacCreate(TAC_LABEL, jumpzlabel, 0, 0);
+    
+    jumptac = tacCreate(TAC_JUMP, jumplabel, 0, 0);    
+    jumplabelTAC = tacCreate(TAC_LABEL, jumplabel, 0, 0);
+
+
+    return tacJoin(code0,
+                    tacJoin(jumpztac, 
+                            tacJoin(code1, 
+                                tacJoin(jumptac,
+                                    tacJoin(jumpzlabelTAC, 
+                                        tacJoin(code2, jumplabelTAC))))));
 }
 
 

@@ -102,3 +102,11 @@ HASH_NODE *makeTemp(void) {
     sprintf(buffer, "__temp%d", serial++);
     return hashInsert(buffer, SYMBOL_VARIABLE);
 }
+
+HASH_NODE *makeLabel(void) {
+    static int serial = 0;
+    char buffer[256];
+
+    sprintf(buffer, "__label%d", serial++);
+    return hashInsert(buffer, SYMBOL_LABEL);
+}
