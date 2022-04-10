@@ -26,7 +26,8 @@
 #define TAC_EQ 19
 #define TAC_DIF 20
 #define TAC_FUNCTION_PARAMS 21
-
+#define TAC_IFZ 22
+#define TAC_JUMP 23
 #define TAC_MOVE 30
 
 #define TAC_LIT 40

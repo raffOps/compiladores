@@ -211,6 +211,15 @@ TAC* generateCode(AST* node) {
             result = tacJoin(code[0], tacJoin(code[1], preResult));
             break;
 
+        case AST_GLOBAL_VARIABLE_TYPE_B:
+        case AST_GLOBAL_VARIABLE_TYPE_C:
+            preResult = tacCreate(TAC_MOVE, node->symbol, 
+                                         code[1]?code[1]->res:0, 
+                                         code[2]?code[2]->res:0);
+            result = tacJoin(code[1], tacJoin(code[2], preResult));
+            break;
+
+
         case AST_ASSIGMENT_TYPE_A:
             preResult = tacCreate(TAC_MOVE, node->symbol, 
                                          code[0]?code[0]->res:0, 
