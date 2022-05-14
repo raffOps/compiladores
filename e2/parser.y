@@ -81,6 +81,7 @@ function_header: type TK_IDENTIFIER '(' function_arguments ')'
     ;
 
 function_body: simple_command
+    | ';'
 
 
 function: function_header function_body
@@ -89,7 +90,7 @@ function: function_header function_body
 // Bloco de Comandos 
 
 block_command: '{' command_list '}'
-    | '{' ';' '}'
+    | '{' '}'
     ;
 
 label: TK_IDENTIFIER ':'
@@ -115,6 +116,7 @@ simple_command:  assignment
     | KW_RETURN expression 
     | block_command 
     | control_flow 
+    | 
     ;
 // // Expressões Aritméticas 
 
