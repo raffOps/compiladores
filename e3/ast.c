@@ -141,6 +141,9 @@ void astPrint(AST *node, int level) {
     case AST_ASSIGMENT_TYPE_B: fprintf(stderr, "AST_ASSIGMENT_TYPE_B");
         break;
 
+    case AST_EMPTY_COMMAND: fprintf(stderr, "AST_EMPTY_COMMAND");
+        break;
+
     default: fprintf(stderr, "AST_UNKNOW");
         break;
     }
@@ -377,7 +380,7 @@ void decompile(AST *ast, int level, FILE *out) {
         case AST_WHILE:
             fprintf(out, "while ");
             decompile(ast->son[0], 0, out);
-            decompile(ast->son[1], level, out);
+            decompile(ast->son[1], level+1, out);
             break;
 
         case AST_IF:
@@ -391,8 +394,9 @@ void decompile(AST *ast, int level, FILE *out) {
         case AST_IF_ELSE:
             fprintf(out, "if ");
             decompile(ast->son[0], 0, out);
-            fprintf(out, " then \n");
+            fprintf(out, " then");
             decompile(ast->son[1], level+1, out);
+            fprintf(out, "\n");
             fprintf(out, " else \n");
             decompile(ast->son[2], level+1, out);
             fprintf(out, "\n");
@@ -418,7 +422,14 @@ void decompile(AST *ast, int level, FILE *out) {
                 decompile(ast->son[0], level+1, out);
             for(int i=0; i<level+1; i++)
                 fprintf(out, "  ");
-            fprintf(out, "}\n");
+            if (level > 1)
+                fprintf(out, "};\n");
+            else
+                fprintf(out, "}\n");
+            break;
+
+        case AST_EMPTY_COMMAND:
+            fprintf(out, ";\n");
             break;
         default:
             break;

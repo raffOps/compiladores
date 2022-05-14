@@ -16,7 +16,7 @@ of multiple lines
 int main ()
   {
   a = 0;
-  a = a - 1;
+  a = a - i;
   a = 5;
   v[a] = 55;
   print v[5];
@@ -25,12 +25,10 @@ int main ()
 
   print "Digite um numero: \n";
   a = read;
-  return b;
-  a = i<10;
 
   while i<10
     {
-    i = incn(i, 1);
+    i = incn(i,1);
     a = incn(a,1);
     };
 
@@ -52,3 +50,12 @@ int main ()
   if a > 0 then
     goto label-x;
   }
+
+int incn (int x , int n )
+  {
+  }
+
+\\ end of file
+  
+
+

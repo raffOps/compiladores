@@ -119,6 +119,7 @@ function_arguments: function_argument ',' function_arguments  { $$ = astCreate(A
     ;
 
 function: type identifier '(' function_arguments ')' simple_command { $$ = astCreate(AST_FUNCTION, 0, $1, $2, $4, $6); }
+    | type identifier '(' ')' simple_command { $$ = astCreate(AST_FUNCTION, 0, $1, $2, 0, $5); }
     ;
 
 // Bloco de Comandos 
