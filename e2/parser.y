@@ -41,7 +41,6 @@ dec: global_variable
 
 type: KW_CHAR 
     | KW_INT 
-    | KW_FLOAT
     ;
 
 float_: LIT_INTEGER '/' LIT_INTEGER
@@ -49,7 +48,6 @@ float_: LIT_INTEGER '/' LIT_INTEGER
 
 literal: LIT_CHAR
     | LIT_INTEGER
-    | float_
     ;
 
 
@@ -60,6 +58,7 @@ list: LIT_INTEGER list
     ;
 
 global_variable: type TK_IDENTIFIER ':' literal ';'
+    | KW_FLOAT TK_IDENTIFIER ':' float_ ';'
     | type TK_IDENTIFIER '[' LIT_INTEGER ']' ';' 
     | type TK_IDENTIFIER '[' LIT_INTEGER ']' ':' list ';'
     ;
