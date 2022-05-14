@@ -43,6 +43,11 @@ type: KW_CHAR
     | KW_INT 
     ;
 
+type2: KW_CHAR 
+    | KW_INT
+    | KW_FLOAT 
+    ;
+
 float_: LIT_INTEGER '/' LIT_INTEGER
     ;
 
@@ -65,7 +70,7 @@ global_variable: type TK_IDENTIFIER ':' literal ';'
 
 // Definição de funções 
 
-function_argument: type TK_IDENTIFIER
+function_argument: type2 TK_IDENTIFIER
 
 function_arguments: function_argument ',' function_arguments 
     | function_argument
@@ -75,8 +80,7 @@ function_header: type TK_IDENTIFIER '(' function_arguments ')'
     | type TK_IDENTIFIER '(' ')'
     ;
 
-function_body: block_command
-    ;
+function_body: simple_command
 
 
 function: function_header function_body
@@ -85,14 +89,14 @@ function: function_header function_body
 // Bloco de Comandos 
 
 block_command: '{' command_list '}'
-    | '{' '}'
+    | '{' ';' '}'
     ;
 
 label: TK_IDENTIFIER ':'
 
 command_list: simple_command ';' command_list
-    | label command_list
     | simple_command ';'
+    | label command_list
     | label
     ;
 // // Comandos simples 
