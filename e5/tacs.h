@@ -33,6 +33,8 @@
 #define TAC_MOVE 30
 
 #define TAC_LIT 40
+#define TAC_READ 41
+#define TAC_VEC_READ 42
 
 typedef struct tac_node
 {

@@ -101,6 +101,12 @@ void tacPrint(TAC* tac) {
     case TAC_LABEL: fprintf(stderr, "TAC_LABEL");
         break; 
 
+    case TAC_VEC_READ: fprintf(stderr, "TAC_VEC_READ");
+        break; 
+
+    case TAC_READ: fprintf(stderr, "TAC_READ");
+        break;   
+
     default:
         fprintf(stderr, "TAC_UNKNOW");
         break;
@@ -248,7 +254,14 @@ TAC* generateCode(AST* node) {
             result = tacCreate(TAC_LIT, node->symbol, 0, 0);
             break;
 
+        case AST_READ:
+            result = tacCreate(TAC_READ, 0, 0, 0);
+            break;
+
         case AST_RETURN:
+            preResult = tacCreate(TAC_RETURN, code[0]?code[0]->res:0, 0, 0);
+            result = tacJoin(code[0], preResult);
+            break;
         case AST_PRINT_FUN:
             result = code[0];
             break;
@@ -303,16 +316,27 @@ TAC* generateCode(AST* node) {
             result = makeBinOperation(TAC_DIF, code[0], code[1]); 
             break;
 
-
+        case AST_FUNCTION_CALL_TYPE_A:
+        case AST_FUNCTION_CALL_TYPE_B:
+            preResult = tacCreate(TAC_FUNCTION_CALL, node->symbol, 
+                                        code[0]?code[0]->res:0, 
+                                        code[1]?code[1]->res:0);
+            result = tacJoin(code[1], tacJoin(code[0], preResult));
+            break;
         case AST_FUNCTION:
-            result = tacJoin(tacCreate(TAC_BEGINGFUN, node->symbol, 0, 0), 
-                            tacJoin(code[1], 
-                                tacJoin(code[2], 
-                                    tacCreate(TAC_ENDFUN, node->symbol, 0, 0))
-                                )
-                            );
+            preResult = tacJoin(tacJoin(tacCreate(TAC_BEGINGFUN, node->symbol, 
+                                            0, 
+                                            code[1]?code[1]->res:0),
+                                code[2]), 
+                                    tacCreate(TAC_ENDFUN, node->symbol, 0, 0));
+
+            result = tacJoin(code[1], preResult);
             break;
 
+        case AST_EXPRESSION_TYPE_C:
+            preResult = tacCreate(TAC_VEC_READ, makeTemp(),  node->symbol, code[0]?code[0]->res:0);
+            result = tacJoin(code[0], preResult);
+            break;
 
         case AST_IF:
             result = makeIfThen(code[0], code[1]);

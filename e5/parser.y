@@ -130,7 +130,7 @@ function_param: type identifier { $$ = astCreate(AST_FUNCTION_PARAM, 0, $1, $2, 
 
 function_params: function_param ',' function_params  { $$ = astCreate(AST_FUNCTION_PARAMS, 0, $1, $3, 0, 0); }
     | function_param { $$ = astCreate(AST_FUNCTION_PARAMS, 0, $1, 0, 0, 0); }
-    | { $$ = astCreate(AST_FUNCTION_PARAMS, 0, 0, 0, 0, 0); }
+    | { $$ = 0; }
     ;
 
 function: type TK_IDENTIFIER '(' function_params ')' simple_command { $$ = astCreate(AST_FUNCTION, $2, $1, $4, $6, 0); }

@@ -36,4 +36,4 @@ zip:
 	@tar cvzf etapa5.tgz .
 
 clean:
-	@rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output* *vscode*
+	@rm -rf *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output* .vscode
