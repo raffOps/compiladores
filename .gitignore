@@ -14,3 +14,4 @@ y.tab.h
 lex.yy.c
 lex.yy.h
 etapa*
+.vscode
