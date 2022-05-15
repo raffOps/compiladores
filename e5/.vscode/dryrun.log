@@ -1,0 +1,16 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/rafaeljuniorribeiro/Documents/ufrgs/compiladores/e5'
+rm -f *.o *.tgz lex.yy.c etapa* .DS_Store y.tab.c y.tab.h *output* *vscode*
+gcc -c hash.c
+gcc -c ast.c
+gcc -c main.c
+yacc -d parser.y
+gcc -c y.tab.c
+lex scanner.l
+gcc -c lex.yy.c
+ 
+gcc -c semantic.c
+gcc -c tacs.c
+gcc main.o hash.o ast.o lex.yy.o y.tab.o semantic.o tacs.o -o etapa5
+make: Leaving directory `/Users/rafaeljuniorribeiro/Documents/ufrgs/compiladores/e5'
+ 

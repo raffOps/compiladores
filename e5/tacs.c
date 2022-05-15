@@ -250,10 +250,14 @@ TAC* generateCode(AST* node) {
 
         case AST_RETURN:
         case AST_PRINT_FUN:
-            preResult = tacCreate(getTacType(node->type), node->symbol, 
-                                        code[0]?code[0]->res:0, 
-                                        0);
-            result = tacJoin(code[0], preResult);
+            result = code[0];
+            break;
+        case AST_PRINT_ARGS: 
+            preResult = tacCreate(TAC_PRINT, 
+                                node->symbol, 
+                                code[0]?code[0]->res:0, 
+                                0); 
+            result = tacJoin(code[1], preResult);
             break;
 
         case AST_INT_LIST: 
@@ -261,9 +265,6 @@ TAC* generateCode(AST* node) {
             break;
         case AST_CHAR_LIST:
             result = makeBinOperation(TAC_LIST, code[0], code[1]); 
-            break;
-        case AST_PRINT_ARGS: 
-            result = makeBinOperation(TAC_PRINT_ARGS, code[0], code[1]); 
             break;
         case AST_FUNCTION_PARAMS:
             result = makeBinOperation(TAC_FUNCTION_PARAMS, code[0], code[1]); 

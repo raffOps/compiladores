@@ -74,7 +74,7 @@ program: decl {
             //check_and_set_declarations($1); 
             //check_undeclared(); 
             //decompile($1, 0, output);
-            astPrint($1, 0);
+            //astPrint($1, 0);
             //check_operands($1);
             //check_variables_functions_use($1);
             tacPrintBackwards(generateCode($1));
@@ -114,7 +114,7 @@ literal: LIT_CHAR {$$ = astCreate(AST_CHAR, $1, 0,  0, 0, 0); }
 lit_list: lit_integer lit_list {$$ = astCreate(AST_INT_LIST, 0, $1, $2, 0, 0); }
     | lit_char lit_list {$$ = astCreate(AST_CHAR_LIST, 0, $1, $2, 0, 0); }
     | lit_integer {$$ = astCreate(AST_INT_LIST, 0, $1, 0, 0, 0); }
-    | lit_char {$$ = astCreate(AST_INT_LIST, 0, $1, 0, 0, 0); }
+    | lit_char {$$ = astCreate(AST_CHAR_LIST, 0, $1, 0, 0, 0); }
     ;
 
 global_variable: type TK_IDENTIFIER ':' literal ';' {$$ = astCreate(AST_GLOBAL_VARIABLE_TYPE_A, $2, $1, $4, 0, 0); }
@@ -134,6 +134,7 @@ function_params: function_param ',' function_params  { $$ = astCreate(AST_FUNCTI
     ;
 
 function: type TK_IDENTIFIER '(' function_params ')' simple_command { $$ = astCreate(AST_FUNCTION, $2, $1, $4, $6, 0); }
+    | type identifier '(' ')' simple_command { $$ = astCreate(AST_FUNCTION, 0, $1, $2, 0, $5); }
     ;
 
 // Bloco de Comandos 
